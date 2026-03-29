@@ -1,0 +1,175 @@
+/* =========================================
+   STYLE RIÊNG CHO TRANG HISTORY
+   ========================================= */
+
+/* Kế thừa style header từ trang datasensor cho đồng bộ */
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+}
+
+.btn-export {
+    padding: 8px 15px;
+    background-color: #27ae60; /* Màu xanh lá cho nút Excel */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.btn-export:hover {
+    background-color: #219150;
+}
+
+/* Table Style */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95em;
+}
+
+.data-table thead {
+    background-color: #f8f9fa;
+    color: #636e72;
+    text-transform: uppercase;
+    font-size: 0.85em;
+    font-weight: 700;
+}
+
+.data-table th, 
+.data-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.data-table tbody tr:hover {
+    background-color: #f1f2f6;
+}
+
+/* BADGE TRẠNG THÁI (ON/OFF) */
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: bold;
+    display: inline-block;
+    min-width: 60px;
+    text-align: center;
+}
+
+.bg-on {
+    background-color: #dff9fb;
+    color: #00cec9;
+    border: 1px solid #c7ecee;
+}
+
+.bg-off {
+    background-color: #dfe6e9;
+    color: #636e72;
+    border: 1px solid #b2bec3;
+}
+
+/* Phân trang */
+.pagination {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 5px;
+}
+
+.page-item {
+    padding: 5px 12px;
+    border: 1px solid #dfe6e9;
+    color: #636e72;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+.page-item.active {
+    background-color: var(--active-orange);
+    color: white;
+    border-color: var(--active-orange);
+}
+
+
+.panel-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 15px;
+}
+.header-right { display: flex; gap: 20px; align-items: center; }
+.rows-selector { font-size: 0.9em; color: #636e72; display: flex; align-items: center; gap: 8px; }
+.rows-selector select { padding: 6px; border: 1px solid #dfe6e9; border-radius: 4px; outline: none; }
+/* ... Style cũ ... */
+
+.custom-input {
+    padding: 8px 12px;
+    border: 1px solid #dfe6e9;
+    border-radius: 4px;
+    font-family: var(--font-tech);
+    outline: none;
+    width: 180px;
+}
+
+.filter-box {
+    display: flex; gap: 10px; align-items: center;
+}
+
+.page-info {
+    padding: 5px 12px;
+    font-size: 0.9em;
+    font-weight: bold;
+    color: #636e72;
+    display: flex; align-items: center;
+}
+
+/* ... Các style cũ giữ nguyên ... */
+
+/* BADGE TRẠNG THÁI (3 TRẠNG THÁI) */
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8em;
+    font-weight: bold;
+    display: inline-block;
+    min-width: 80px; /* Độ rộng cố định cho thẳng hàng */
+    text-align: center;
+}
+
+/* 1. Thành công (Xanh lá) */
+.bg-success {
+    background-color: #dff9fb;
+    color: #2ecc71;
+    border: 1px solid #2ecc71;
+}
+
+/* 2. Đang chờ (Vàng cam) */
+.bg-pending {
+    background-color: #fff3cd;
+    color: #f39c12;
+    border: 1px solid #f39c12;
+}
+
+/* 3. Lỗi (Đỏ) */
+.bg-error {
+    background-color: #f8d7da;
+    color: #e74c3c;
+    border: 1px solid #e74c3c;
+}
+
+/* Style cho cột Hành động (ON/OFF) */
+.action-text {
+    font-weight: 800;
+    font-family: monospace; /* Font chữ máy tính cho đẹp */
+    font-size: 1.1em;
+}
+
+.act-on { color: #27ae60; }
+.act-off { color: #c0392b; }

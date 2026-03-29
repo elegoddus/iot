@@ -1,0 +1,105 @@
+/* =========================================
+   STYLE CIRCUIT BOARD EFFECT
+   ========================================= */
+
+body {
+    background-color: #111 !important; /* Nền đen sâu */
+    overflow-x: hidden;
+}
+
+/* Canvas phủ toàn màn hình làm nền */
+#circuit-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: -1;
+    background: #0b0b0b; /* Màu nền gốc cực tối */
+}
+
+/* Glass Effect cho thẻ Card để nhìn xuyên thấu mạch điện */
+.glass-effect {
+    background: rgba(20, 20, 20, 0.6) !important; /* Đen trong suốt */
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(230, 126, 34, 0.3); /* Viền cam mờ */
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+    color: #fff; /* Chữ trắng cho nổi trên nền đen */
+}
+
+/* --- ĐIỀU CHỈNH MÀU SẮC CONTENT CHO HỢP NỀN TỐI --- */
+.cyber-name {
+    /* Gradient Cam rực rỡ */
+    background: linear-gradient(90deg, #fff 0%, #e67e22 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.cyber-role { color: #b2bec3; }
+
+.info-block {
+    background: rgba(255, 255, 255, 0.05); /* Block trong suốt */
+    border-left: 4px solid #e67e22;
+}
+.info-block:hover {
+    background: rgba(230, 126, 34, 0.1);
+    box-shadow: 0 0 20px rgba(230, 126, 34, 0.2);
+}
+
+.block-label { color: #dae912; }
+.block-value { color: #fff; } /* Chữ trắng */
+
+.section-title { color: #fff; }
+
+/* Avatar Hexagon */
+.hex-avatar { border: 3px solid #e67e22; }
+
+/* Navbar điều chỉnh màu */
+.top-navbar {
+    background-color: rgba(20, 20, 20, 0.9) !important;
+    border-bottom: 1px solid #333;
+}
+.logo { color: #fff; }
+
+/* CÁC STYLE KHÁC GIỮ NGUYÊN TỪ BÀI TRƯỚC (Grid, Layout...) */
+.profile-content-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 50px; }
+.identity-col { display: flex; flex-direction: column; align-items: center; text-align: center; padding-right: 30px; border-right: 1px dashed #444; }
+.avatar-wrapper { position: relative; width: 180px; height: 180px; margin-bottom: 30px; display: flex; justify-content: center; align-items: center; }
+.hex-avatar { width: 160px; height: 160px; background: var(--active-orange); clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); z-index: 2; overflow: hidden; }
+.hex-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.pulse-ring { position: absolute; width: 100%; height: 100%; background: var(--active-orange); clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); z-index: 1; opacity: 0.3; animation: pulse-animation 2s infinite; }
+@keyframes pulse-animation { 0% { transform: scale(1); opacity: 0.3; } 50% { transform: scale(1.1); opacity: 0.1; } 100% { transform: scale(1); opacity: 0.3; } }
+.status-badge { margin-top: 20px; display: inline-flex; align-items: center; padding: 5px 15px; background: rgba(0, 206, 201, 0.1); color: #00cec9; border: 1px solid #00cec9; border-radius: 20px; font-size: 0.8em; font-weight: bold; letter-spacing: 1px; }
+.status-dot { width: 8px; height: 8px; background: #00cec9; border-radius: 50%; margin-right: 8px; box-shadow: 0 0 10px #00cec9; }
+.section-title::after { content: ''; position: absolute; bottom: -8px; left: 0; width: 50px; height: 3px; background: var(--active-orange); clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%); }
+.info-blocks-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.info-block { clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px); transition: all 0.3s; }
+.skills-container { display: flex; flex-direction: column; gap: 15px; }
+.skill-info { display: flex; justify-content: space-between; font-weight: 700; font-size: 0.9em; margin-bottom: 5px; color: #fff; }
+.progress-bar-bg { height: 12px; background: #333; border-radius: 6px; overflow: hidden; position: relative; }
+.progress-bar-fill { height: 100%; border-radius: 6px; width: 0; transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1); background-image: linear-gradient(45deg, rgba(255,255,255,.15) 25%, transparent 25%, transparent 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.15) 75%, transparent 75%, transparent); background-size: 20px 20px; animation: progress-stripe 1s linear infinite; }
+@keyframes progress-stripe { 0% { background-position: 0 0; } 100% { background-position: 20px 0; } }
+.tech-orange { background-color: var(--active-orange); box-shadow: 0 0 15px rgba(230, 126, 34, 0.8); }
+.tech-blue { background-color: #0984e3; box-shadow: 0 0 15px rgba(9, 132, 227, 0.8); }
+.tech-cyan { background-color: #00cec9; box-shadow: 0 0 15px rgba(0, 206, 201, 0.8); }
+.social-actions { display: flex; gap: 15px; }
+.cyber-btn { text-decoration: none; padding: 12px 25px; font-weight: 700; font-family: var(--font-tech); border: none; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.3s; clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px); }
+.btn-github { background: #fff; color: #000; }
+.btn-email { background: #0984e3; color: white; }
+.btn-edit { background: var(--active-orange); color: white; margin-left: auto; }
+.cyber-btn:hover { transform: translateY(-3px); box-shadow: 0 0 15px rgba(255,255,255,0.3); }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .profile-content-grid { grid-template-columns: 1fr; gap: 30px; }
+    .identity-col { padding-right: 0; border-right: none; border-bottom: 2px dashed #444; padding-bottom: 30px; }
+    .info-blocks-grid { grid-template-columns: 1fr; }
+    .social-actions { flex-direction: column; }
+    .btn-edit { margin-left: 0; }
+}
+
+
+
+.btn-github { background: #2d3436; color: white; }
+.btn-email { background: #0984e3; color: white; }
+.btn-api { background: #6c5ce7; color: white; }
+.btn-figma { background: #d63031; color: white; }
+.btn-report { background: #e17055; color: white; }

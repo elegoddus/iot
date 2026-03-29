@@ -1,0 +1,283 @@
+/* =========================================
+   dashboard.css
+   Style riêng cho trang chủ Dashboard
+   ========================================= */
+
+/* BIẾN MÀU RIÊNG CHO THIẾT BỊ */
+:root {
+    --color-fan: #00cec9;
+    --color-lamp: #f1c40f;
+    --color-ac: #9b59b6;
+}
+
+/* =========================================
+   1. SENSOR CARDS (Ô CẢM BIẾN)
+   ========================================= */
+.grid-system {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.mech-card {
+    background: var(--card-bg);
+    padding: 0 30px;
+    height: 160px;
+    
+    /* Layout Flexbox */
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    
+    /* Cắt góc Mecha */
+    clip-path: polygon(
+        30px 0, 
+        100% 0, 
+        100% calc(100% - 30px), 
+        calc(100% - 30px) 100%, 
+        0 100%, 
+        0 30px
+    );
+    
+    transition: background-color 0.6s ease, color 0.3s;
+    color: var(--text-primary);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    cursor: default;
+}
+
+/* Phần bên trái (Text) */
+.card-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    z-index: 2;
+}
+
+.card-title {
+    font-size: 1.1em;
+    font-weight: 700;
+    text-transform: uppercase;
+    opacity: 0.9;
+    margin-bottom: 5px;
+}
+
+.card-value-box {
+    font-size: 4.5em;
+    font-weight: 800;
+    line-height: 1;
+    display: flex;
+    align-items: baseline;
+}
+
+.unit {
+    font-size: 0.4em;
+    margin-left: 8px;
+    font-weight: 400;
+    opacity: 0.8;
+}
+
+/* Phần bên phải (Icon to) */
+.card-right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-right i {
+    font-size: 6em;
+    color: inherit;
+    opacity: 0.4;
+    transform: translateY(5px);
+}
+
+/* =========================================
+   2. BOTTOM SECTION (BIỂU ĐỒ & NÚT)
+   ========================================= */
+.bottom-section {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+}
+
+.chart-wrapper {
+    position: relative;
+    height: 350px;
+    width: 100%;
+}
+
+/* =========================================
+   3. CONTROL BUTTONS (NÚT BẤM) - ĐÃ FIX LỖI
+   ========================================= */
+.control-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.control-btn {
+    background: #f1f2f6;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+    border-left: 5px solid #b2bec3;
+    
+    /* Cắt góc nút */
+    clip-path: polygon(
+        10px 0, 
+        100% 0, 
+        100% calc(100% - 10px), 
+        calc(100% - 10px) 100%, 
+        0 100%, 
+        0 10px
+    );
+}
+
+.control-btn:hover {
+    background: #e6e6e6;
+}
+
+.btn-icon-area {
+    font-size: 1.4em;
+    color: #636e72;
+    width: 40px;
+    text-align: center;
+}
+
+.btn-info {
+    flex: 1;
+    padding: 0 15px;
+}
+
+.device-name {
+    font-weight: 700;
+    font-size: 0.85em;
+    text-transform: uppercase;
+}
+
+.device-status {
+    font-size: 0.8em;
+    color: #636e72;
+    margin-top: 3px;
+    font-weight: 500;
+}
+
+/* KHUNG TRÒN CHỨA ICON (Quan trọng) */
+.btn-action {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #b2bec3;
+    color: #b2bec3;
+    
+    /* Căn giữa tuyệt đối */
+    display: grid;
+    place-items: center;
+    
+    font-size: 1.2em;
+    transition: all 0.3s;
+    background: transparent;
+}
+
+/* LOGIC ẨN HIỆN ICON TUYỆT ĐỐI 
+   Dùng !important để đảm bảo không bị ghi đè
+*/
+
+/* Trạng thái bình thường: Hiện nút nguồn */
+.icon-power {
+    display: block !important;
+}
+
+/* Trạng thái bình thường: Ẩn loading */
+.icon-loading {
+    display: none !important;
+}
+
+/* KHI LOADING (Thêm class .loading vào nút cha)
+*/
+.control-btn.loading {
+    background: #f8f9fa;
+    opacity: 0.8;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Khi Loading: Ẩn nút nguồn */
+.control-btn.loading .icon-power {
+    display: none !important;
+}
+
+/* Khi Loading: Hiện icon loading */
+.control-btn.loading .icon-loading {
+    display: block !important;
+}
+
+
+/* =========================================
+   4. ACTIVE STATES (MÀU SẮC KHI BẬT)
+   ========================================= */
+
+/* --- QUẠT (FAN) --- */
+#btn-fan.active {
+    background: #e0f7fa;
+    border-left-color: var(--color-fan);
+}
+
+#btn-fan.active .btn-icon-area {
+    color: var(--color-fan);
+    animation: spin 2s linear infinite;
+}
+
+#btn-fan.active .btn-action {
+    background: var(--color-fan);
+    border-color: var(--color-fan);
+    color: white;
+    box-shadow: 0 0 10px rgba(0, 206, 201, 0.4);
+}
+
+/* --- ĐÈN (LAMP) --- */
+#btn-lamp.active {
+    background: #fff8e1;
+    border-left-color: var(--color-lamp);
+}
+
+#btn-lamp.active .btn-icon-area {
+    color: var(--color-lamp);
+}
+
+#btn-lamp.active .btn-action {
+    background: var(--color-lamp);
+    border-color: var(--color-lamp);
+    color: white;
+    box-shadow: 0 0 10px rgba(241, 196, 15, 0.4);
+}
+
+/* --- ĐÈN HUỲNH QUANG (AC) --- */
+#btn-ac.active {
+    background: #f3e5f5;
+    border-left-color: var(--color-ac);
+}
+
+#btn-ac.active .btn-icon-area {
+    color: var(--color-ac);
+}
+
+#btn-ac.active .btn-action {
+    background: var(--color-ac);
+    border-color: var(--color-ac);
+    color: white;
+    box-shadow: 0 0 10px rgba(155, 89, 182, 0.4);
+}
+
+/* Animation xoay tròn */
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}

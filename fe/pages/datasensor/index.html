@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IOT Dashboard - Dữ Liệu Cảm Biến</title>
+    <link rel="stylesheet" href="../../global.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+    <nav class="top-navbar">
+        <div class="nav-left">
+            <a href="../../index.html" class="logo"><i class="fa-solid fa-layer-group"></i> IOT DASHBOARD</a>
+            <ul class="nav-links">
+                <li><a href="../../index.html">DASHBOARD</a></li>
+                <li><a href="#" class="active">DATA SENSOR</a></li>
+                <li><a href="../history/index.html">ACTION HISTORY</a></li>
+            </ul>
+        </div>
+        <div class="nav-right">
+            <a href="../profile/index.html" class="user-profile-link">
+                <div class="name">Lê Xuân Trường</div>
+                <div class="avatar">T</div>
+            </a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="tech-panel">
+            <div class="panel-header">
+                <div class="header-left">
+                    <div class="panel-title">LỊCH SỬ DỮ LIỆU CẢM BIẾN</div>
+                </div>
+                
+                <div class="header-right">
+                    <div class="rows-selector">
+                        <label>Hiển thị:</label>
+                        <select id="rows-per-page" class="custom-select">
+                            <option value="10" selected>10 hàng</option>
+                            <option value="20">20 hàng</option>
+                            <option value="50">50 hàng</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-box">
+                        <select id="filter-type" class="custom-select">
+                            <option value="all">Tất cả cảm biến</option>
+                            <option value="temp">Nhiệt độ</option>
+                            <option value="humid">Độ ẩm</option>
+                            <option value="light">Ánh sáng</option>
+                        </select>
+                        
+                        <input type="text" id="search-input" class="custom-input" placeholder="Nhập ID hoặc Thời gian...">
+                        
+                        <button class="btn-search" id="btn-search">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Cảm biến</th>
+                            <th>Giá trị</th>
+                            <th>Thời gian nhận (Time)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sensor-table-body"></tbody>
+                </table>
+            </div>
+
+            <div class="pagination">
+                <span class="page-item" id="btn-prev">Prev</span>
+                <span class="page-info" id="page-info">Trang 1</span>
+                <span class="page-item" id="btn-next">Next</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

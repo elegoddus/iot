@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>IOT Dashboard - Lịch Sử</title>
+    <link rel="stylesheet" href="../../global.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+    <nav class="top-navbar">
+        <div class="nav-left">
+            <a href="../../index.html" class="logo"><i class="fa-solid fa-layer-group"></i> IOT DASHBOARD</a>
+            <ul class="nav-links">
+                <li><a href="../../index.html">DASHBOARD</a></li>
+                <li><a href="../datasensor/index.html">DATA SENSOR</a></li>
+                <li><a href="#" class="active">ACTION HISTORY</a></li>
+            </ul>
+        </div>
+        <div class="nav-right">
+            <a href="../profile/index.html" class="user-profile-link">
+                <div class="name">Lê Xuân Trường</div>
+                <div class="avatar">T</div>
+            </a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="tech-panel">
+            <div class="panel-header">
+                <div class="header-left">
+                    <div class="panel-title">NHẬT KÝ ĐIỀU KHIỂN</div>
+                </div>
+                
+                <div class="header-right">
+                    <div class="rows-selector">
+                        <label>Hiển thị:</label>
+                        <select id="rows-history" class="custom-select">
+                            <option value="10" selected>10 hàng</option>
+                            <option value="20">20 hàng</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-box">
+                        <select id="filter-device" class="custom-select">
+                            <option value="all">Tất cả thiết bị</option>
+                            <option value="fan">Quạt thông hơi</option>
+                            <option value="lamp">Đèn chùm</option>
+                            <option value="ac">Đèn huỳnh quang</option>
+                        </select>
+
+                        <input type="text" id="search-history" class="custom-input" placeholder="Tìm ID hoặc Thời gian...">
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Thiết bị</th>
+                            <th>Hành động</th>
+                            <th>Trạng thái</th>
+                            <th>Thời gian</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-table-body"></tbody>
+                </table>
+            </div>
+            
+            <div class="pagination">
+                <span class="page-item" id="btn-prev">Prev</span>
+                <span class="page-info" id="page-info">Trang 1</span>
+                <span class="page-item" id="btn-next">Next</span>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

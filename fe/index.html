@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IOT Dashboard - Home</title>
+    <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <nav class="top-navbar">
+        <div class="nav-left">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-layer-group"></i> IOT DASHBOARD
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">DASHBOARD</a></li>
+                <li><a href="pages/datasensor/index.html">DATA SENSOR</a></li>
+                <li><a href="pages/history/index.html">ACTION HISTORY</a></li>
+            </ul>
+        </div>
+        <div class="nav-right">
+            <a href="pages/profile/index.html" class="user-profile-link">
+                <div class="name">Lê Xuân Trường</div>
+                <div class="avatar">T</div>
+            </a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="grid-system">
+            <div class="mech-card" id="card-temp">
+                <div class="card-left">
+                    <div class="card-title">NHIỆT ĐỘ</div>
+                    <div class="card-value-box">
+                        <span id="val-temp">--</span><span class="unit">°C</span>
+                    </div>
+                </div>
+                <div class="card-right"><i class="fa-solid fa-temperature-three-quarters"></i></div>
+            </div>
+            <div class="mech-card" id="card-humid">
+                <div class="card-left">
+                    <div class="card-title">ĐỘ ẨM</div>
+                    <div class="card-value-box">
+                        <span id="val-humid">--</span><span class="unit">%</span>
+                    </div>
+                </div>
+                <div class="card-right"><i class="fa-solid fa-droplet"></i></div>
+            </div>
+            <div class="mech-card" id="card-light">
+                <div class="card-left">
+                    <div class="card-title">ÁNH SÁNG</div>
+                    <div class="card-value-box">
+                        <span id="val-light">--</span><span class="unit">Lux</span>
+                    </div>
+                </div>
+                <div class="card-right"><i class="fa-solid fa-sun"></i></div>
+            </div>
+        </div>
+
+        <div class="bottom-section">
+            <div class="tech-panel">
+                <div class="panel-title">Biểu đồ giám sát</div>
+                <div class="chart-wrapper">
+                    <canvas id="mainChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="tech-panel">
+                <div class="panel-title">Bảng điều khiển</div>
+                <div class="control-grid">
+                    
+                    <div class="control-btn" id="btn-fan" onclick="toggleDevice('fan')">
+                        <div class="btn-icon-area">
+                            <i class="fa-solid fa-fan"></i>
+                        </div>
+                        <div class="btn-info">
+                            <div class="device-name">QUẠT THÔNG HƠI</div>
+                            <div class="device-status">Đang tắt</div>
+                        </div>
+                        <div class="btn-action">
+                            <i class="fa-solid fa-power-off icon-power"></i>
+                            <i class="fa-solid fa-circle-notch fa-spin icon-loading"></i>
+                        </div>
+                    </div>
+
+                    <div class="control-btn" id="btn-lamp" onclick="toggleDevice('lamp')">
+                        <div class="btn-icon-area">
+                            <i class="fa-solid fa-lightbulb"></i>
+                        </div>
+                        <div class="btn-info">
+                            <div class="device-name">ĐÈN CHÙM</div>
+                            <div class="device-status">Đang tắt</div>
+                        </div>
+                        <div class="btn-action">
+                            <i class="fa-solid fa-power-off icon-power"></i>
+                            <i class="fa-solid fa-circle-notch fa-spin icon-loading"></i>
+                        </div>
+                    </div>
+
+                    <div class="control-btn" id="btn-ac" onclick="toggleDevice('ac')">
+                        <div class="btn-icon-area">
+                            <i class="fa-solid fa-bolt"></i>
+                        </div>
+                        <div class="btn-info">
+                            <div class="device-name">ĐÈN HUỲNH QUANG</div>
+                            <div class="device-status">Đang tắt</div>
+                        </div>
+                        <div class="btn-action">
+                            <i class="fa-solid fa-power-off icon-power"></i>
+                            <i class="fa-solid fa-circle-notch fa-spin icon-loading"></i>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="dashboard.js"></script>
+</body>
+</html>
