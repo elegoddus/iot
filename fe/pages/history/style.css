@@ -1,175 +1,141 @@
-/* =========================================
-   STYLE RIÊNG CHO TRANG HISTORY
-   ========================================= */
-
 /* Kế thừa style header từ trang datasensor cho đồng bộ */
 .panel-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #f1f1f1;
     padding-bottom: 15px;
 }
 
-.btn-export {
-    padding: 8px 15px;
-    background-color: #27ae60; /* Màu xanh lá cho nút Excel */
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: 0.3s;
-}
+/* Header Action / Khối trên cùng */
+.header-right { display: flex; gap: 20px; align-items: center; }
+.rows-selector { font-size: 0.9em; color: #888; display: flex; align-items: center; gap: 8px; }
+.rows-selector select { padding: 8px 12px; border: 1px solid #e0e0e0; border-radius: 4px; outline: none; color: #888; }
+.custom-input { padding: 8px 12px; border: 1px solid #e0e0e0; border-radius: 4px; outline: none; width: 180px; color: #888; }
+.filter-box { display: flex; gap: 10px; align-items: center; }
+.filter-box select { padding: 8px 12px; border: 1px solid #e0e0e0; border-radius: 4px; outline: none; color: #888; }
+.btn-search { padding: 8px 15px; background-color: #ED8123; color: white; border: none; border-radius: 4px; cursor: pointer; }
 
-.btn-export:hover {
-    background-color: #219150;
-}
-
-/* Table Style */
+/* =========================================
+   TABLE STYLE (FIGMA)
+   ========================================= */
 .data-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 0.95em;
+    font-family: 'Segoe UI', sans-serif;
+    color: #888;
 }
 
 .data-table thead {
-    background-color: #f8f9fa;
-    color: #636e72;
-    text-transform: uppercase;
-    font-size: 0.85em;
-    font-weight: 700;
+    background-color: #fcfcfc;
 }
 
-.data-table th, 
-.data-table td {
-    padding: 15px;
+.data-table th {
+    padding: 15px 25px;
     text-align: left;
-    border-bottom: 1px solid #eee;
+    color: #a63a15;
+    text-transform: uppercase;
+    font-size: 0.8em;
+    font-weight: 800;
+    border: none;
+}
+
+.data-table td {
+    padding: 15px 25px;
+    text-align: left;
+    border-bottom: 1px solid #f8f8f8;
+    vertical-align: middle;
 }
 
 .data-table tbody tr:hover {
-    background-color: #f1f2f6;
+    background-color: #fcfcfc;
 }
 
-/* BADGE TRẠNG THÁI (ON/OFF) */
+/* TEXT MÀU XÁM DÀNH CHO ID / TIME */
+.col-id {
+    color: #b3b3b3;
+}
+.col-time {
+    color: #b3b3b3;
+}
+
+/* THIẾT BỊ COLUMN */
+.col-dev {
+    display: flex;
+    align-items: center;
+}
+.col-dev span {
+    color: #a0a0a0;
+}
+
+/* MÀU SẮC TRẠNG THÁI THEO FIGMA (Light Pill) */
 .status-badge {
-    padding: 6px 12px;
+    padding: 6px 15px;
     border-radius: 20px;
-    font-size: 0.85em;
-    font-weight: bold;
+    font-size: 0.75em;
+    font-weight: 800;
     display: inline-block;
-    min-width: 60px;
+    min-width: 90px;
     text-align: center;
+    text-transform: uppercase;
 }
 
-.bg-on {
-    background-color: #dff9fb;
-    color: #00cec9;
-    border: 1px solid #c7ecee;
+.bg-success {
+    background-color: #e3fcf3;
+    color: #0bdcb5;
+    border: 1px solid #0bdcb5;
 }
 
-.bg-off {
-    background-color: #dfe6e9;
-    color: #636e72;
-    border: 1px solid #b2bec3;
+.bg-pending {
+    background-color: #fef5d9;
+    color: #f3c200;
+    border: 1px solid #f3c200;
+}
+
+.bg-error {
+    background-color: #fbd3d5;
+    color: #e74c3c;
+    border: 1px solid #e74c3c;
+}
+
+/* HÀNH ĐỘNG (ON / OFF) - MÀU XÁM THEO FIGMA */
+.action-text {
+    font-weight: 600;
+    font-size: 0.9em;
+}
+
+.act-gray {
+    color: #888;
 }
 
 /* Phân trang */
 .pagination {
-    margin-top: 20px;
+    margin-top: 30px;
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     gap: 5px;
 }
 
 .page-item {
-    padding: 5px 12px;
-    border: 1px solid #dfe6e9;
-    color: #636e72;
+    padding: 6px 12px;
+    border: 1px solid #f1f1f1;
+    color: #888;
     cursor: pointer;
-    border-radius: 4px;
+    background: white;
     font-size: 0.9em;
 }
 
 .page-item.active {
-    background-color: var(--active-orange);
+    background-color: #ed8123;
     color: white;
-    border-color: var(--active-orange);
-}
-
-
-.panel-header {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 15px;
-}
-.header-right { display: flex; gap: 20px; align-items: center; }
-.rows-selector { font-size: 0.9em; color: #636e72; display: flex; align-items: center; gap: 8px; }
-.rows-selector select { padding: 6px; border: 1px solid #dfe6e9; border-radius: 4px; outline: none; }
-/* ... Style cũ ... */
-
-.custom-input {
-    padding: 8px 12px;
-    border: 1px solid #dfe6e9;
-    border-radius: 4px;
-    font-family: var(--font-tech);
-    outline: none;
-    width: 180px;
-}
-
-.filter-box {
-    display: flex; gap: 10px; align-items: center;
+    border-color: #ed8123;
 }
 
 .page-info {
     padding: 5px 12px;
     font-size: 0.9em;
-    font-weight: bold;
-    color: #636e72;
-    display: flex; align-items: center;
+    color: #a0a0a0;
 }
-
-/* ... Các style cũ giữ nguyên ... */
-
-/* BADGE TRẠNG THÁI (3 TRẠNG THÁI) */
-.status-badge {
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 0.8em;
-    font-weight: bold;
-    display: inline-block;
-    min-width: 80px; /* Độ rộng cố định cho thẳng hàng */
-    text-align: center;
-}
-
-/* 1. Thành công (Xanh lá) */
-.bg-success {
-    background-color: #dff9fb;
-    color: #2ecc71;
-    border: 1px solid #2ecc71;
-}
-
-/* 2. Đang chờ (Vàng cam) */
-.bg-pending {
-    background-color: #fff3cd;
-    color: #f39c12;
-    border: 1px solid #f39c12;
-}
-
-/* 3. Lỗi (Đỏ) */
-.bg-error {
-    background-color: #f8d7da;
-    color: #e74c3c;
-    border: 1px solid #e74c3c;
-}
-
-/* Style cho cột Hành động (ON/OFF) */
-.action-text {
-    font-weight: 800;
-    font-family: monospace; /* Font chữ máy tính cho đẹp */
-    font-size: 1.1em;
-}
-
-.act-on { color: #27ae60; }
-.act-off { color: #c0392b; }

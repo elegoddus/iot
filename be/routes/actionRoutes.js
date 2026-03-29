@@ -67,7 +67,7 @@ router.post('/control', async (req, res) => {
 // Get action history
 router.get('/history', async (req, res) => {
     try {
-        let { page = 1, limit = 10, search = '', sortBy = 'created_at', order = 'DESC' } = req.query;
+        let { page = 1, limit = 10, search = '', deviceId = 'all', sortBy = 'created_at', order = 'DESC' } = req.query;
         page = parseInt(page);
         limit = parseInt(limit);
         const offset = (page - 1) * limit;
@@ -79,6 +79,11 @@ router.get('/history', async (req, res) => {
             WHERE 1=1
         `;
         const params = [];
+
+        if (deviceId !== 'all') {
+            query += ` AND a.device_id = ?`;
+            params.push(deviceId);
+        }
 
         if (search) {
             query += ` AND (d.name LIKE ? OR a.action LIKE ? OR a.created_at LIKE ?)`;
@@ -101,6 +106,10 @@ router.get('/history', async (req, res) => {
             WHERE 1=1
         `;
         const countParams = [];
+        if (deviceId !== 'all') {
+            countQuery += ` AND a.device_id = ?`;
+            countParams.push(deviceId);
+        }
         if (search) {
             countQuery += ` AND (d.name LIKE ? OR a.action LIKE ? OR a.created_at LIKE ?)`;
             countParams.push(`%${search}%`, `%${search}%`, `%${search}%`);
