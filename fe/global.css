@@ -2,11 +2,14 @@
    1. CORE VARIABLES & RESET
    ========================================= */
 :root {
-    --bg-app: #eef1f5;
+    --bg-app: #f4eaeb; /* Background color approximating the figma image */
     --text-primary: #2d3436;
     --card-bg: #ffffff;
     --navbar-bg: #ffffff;
-    --active-orange: #e67e22;
+    --active-gradient: linear-gradient(90deg, #200479, #792004);
+    --inactive-btn-bg: #D4A9A6; /* Example color for inactive navbar */
+    --border-orange: #ED8123;
+    --text-gradient: linear-gradient(90deg, #F9A939, #972004);
     --font-tech: 'Segoe UI', sans-serif;
 }
 
@@ -24,7 +27,7 @@ body {
 }
 
 /* =========================================
-   2. NAVBAR (DÙNG CHUNG)
+   2. NAVBAR
    ========================================= */
 .top-navbar {
     background-color: var(--navbar-bg);
@@ -33,7 +36,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 3px solid rgba(0, 0, 0, 0.05);
+    border-bottom: 2px solid rgba(0, 0, 0, 0.05);
     position: sticky;
     top: 0;
     z-index: 100;
@@ -42,47 +45,73 @@ body {
 .nav-left {
     display: flex;
     align-items: center;
-    gap: 50px;
+    gap: 40px;
 }
 
 .logo {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 900;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
     color: var(--text-primary);
     text-decoration: none;
     display: flex;
     align-items: center;
     gap: 10px;
+    text-transform: uppercase;
 }
 
 .nav-links {
     list-style: none;
     display: flex;
-    gap: 5px;
+    gap: 15px;
     padding: 0;
     margin: 0;
 }
 
-.nav-links a {
-    text-decoration: none;
-    color: #636e72;
-    font-weight: 700;
-    font-size: 0.9em;
-    padding: 10px 25px;
-    transition: all 0.3s;
-    /* Cắt góc nút menu */
-    clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+.nav-item-wrap {
+    padding: 2px; /* Độ dày viền cam */
+    background: #ED8123; /* Viền cam */
+    clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
+    transition: all 0.3s ease;
+    display: block;
+    cursor: pointer;
 }
 
-.nav-links a.active,
-.nav-links a:hover {
-    background-color: var(--active-orange);
+.nav-item {
+    display: block;
+    background: white; /* Nền bình thường khi không chọn */
+    padding: 10px 25px;
+    color: #a4b0be;
+    font-weight: 700;
+    font-size: 0.85em;
+    text-decoration: none;
+    clip-path: polygon(13px 0, 100% 0, 100% calc(100% - 13px), calc(100% - 13px) 100%, 0 100%, 0 13px);
+    transition: all 0.3s ease;
+}
+
+/* 1. Trang đang chọn (active): viền cam, màu nổi bật gradient 200479 và 972004 */
+.nav-item-wrap.active {
+    background: #ED8123; /* Viền cam */
+}
+.nav-item-wrap.active .nav-item {
+    background: linear-gradient(90deg, #200479, #972004);
+    color: white; /* Màu nổi bật */
+}
+
+/* 2. Khi di chuột vào (hover): ẩn viền, màu nhạt, alpha 50% */
+.nav-item-wrap:hover {
+    background: transparent; /* Ẩn viền cam */
+}
+.nav-item-wrap:hover .nav-item {
+    background: linear-gradient(90deg, rgba(32,4,121,0.5), rgba(151,32,4,0.5));
     color: white;
 }
 
+/* 3. Khi không chọn: chỉ có viền cam (từ nav-item-wrap), nền trắng (từ nav-item) */
+
+
 /* =========================================
-   3. PROFILE LINK (GÓC PHẢI)
+   3. PROFILE LINK
    ========================================= */
 .nav-right {
     display: flex;
@@ -91,42 +120,20 @@ body {
 
 .user-profile-link {
     text-decoration: none;
-    color: inherit;
+    color: #ED8123;
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 8px 20px;
-    background: #f1f2f6;
-    /* Cắt góc profile */
-    clip-path: polygon(15px 0, 100% 0, 100% 100%, 0 100%, 0 15px);
+    padding: 8px 25px;
+    background: white;
+    border: 2px solid #ED8123;
+    clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
     transition: all 0.3s;
-    border-left: 4px solid transparent;
-}
-
-.user-profile-link:hover {
-    background: #dfe6e9;
-    border-left: 4px solid var(--active-orange);
-}
-
-.avatar {
-    width: 32px;
-    height: 32px;
-    background: var(--active-orange);
-    color: white;
-    border-radius: 4px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: bold;
-}
-
-.name {
     font-weight: 600;
-    font-size: 0.95em;
 }
 
 /* =========================================
-   4. LAYOUT CONTAINER & PANEL
+   4. LAYOUT CONT & PANEL
    ========================================= */
 .container {
     max-width: 1200px;
@@ -135,22 +142,69 @@ body {
     padding-bottom: 50px;
 }
 
-.tech-panel {
-    background: white;
-    padding: 25px;
+/* Container Wrapper */
+.tech-panel-wrapper {
     display: flex;
     flex-direction: column;
-    /* Cắt góc panel */
-    clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
+    margin-bottom: 30px;
     filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.05));
 }
 
+/* Thang ngang chứa Tiêu đề và Nền Trắng */
+.top-bar-area {
+    display: flex;
+    align-items: stretch; /* Đảm bảo chiều cao 2 khối bằng nhau */
+    margin-left: 20px; /* Thụt vào 20px (cạnh 1b) */
+    position: relative;
+    z-index: 2; 
+}
+
+/* Tiêu đề BẢNG ĐIỀU KHIỂN / BIỂU ĐỒ - Chuẩn hình học người dùng */
+.panel-title-container {
+    background: linear-gradient(90deg, #972004, #ED8123);
+    color: white;
+    font-weight: 800;
+    padding: 12px 45px 12px 25px; 
+    font-size: 1.15em;
+    display: flex;
+    align-items: center;
+    /* Vát góc trên trái 15px (góc 1.5a và 1.5b), phải vát \ (cạnh 1a), các cạnh còn lại vuông góc */
+    clip-path: polygon(15px 0, 100% 0, calc(100% - 20px) 100%, 0 100%, 0 15px);
+}
+
+/* Khối lấp đầy màu trắng bên phải Tiêu đề (Cạnh 1a của hộp to) */
+.white-filler {
+    flex: 1;
+    background: white;
+    /* Tạo vát cạnh \ (cạnh 1a) để nối tiếp mép phải của tiêu đề */
+    clip-path: polygon(20px 0, 100% 0, 100% 100%, 0 100%);
+    margin-left: -20px; /* Lùi lại khóa chặt vào tiêu đề, không để hở kẽ */
+    
+    /* Dùng làm header space cho các trang sub */
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 30px;
+    gap: 20px;
+}
+
+/* Khối chứa thông tin chính (Cạnh 1c của hộp to) */
+.panel-main-body {
+    background: white;
+    padding: 25px 30px 30px 30px;
+    flex: 1;
+    /* Góc trên trái vát / (cạnh 1c) tiếp nối từ chân tiêu đề, dưới phải vát 3a */
+    clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%, 0 20px);
+    margin-top: -1px; /* Đảm bảo không có line hở dọc viền ghép */
+}
+
+/* Tiêu đề chữ gradient phẳng (Dành cho các trang sub-pages Lịch Sử nếu cần) */
 .panel-title {
-    font-weight: 700;
+    font-weight: 800;
     font-size: 1.2em;
     text-transform: uppercase;
-    margin-bottom: 20px;
-    padding-left: 15px;
-    border-left: 5px solid var(--active-orange);
-    color: #2d3436;
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+    background-image: linear-gradient(90deg, #972004, #ED8123);
 }

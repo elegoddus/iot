@@ -3,9 +3,9 @@
 #include "DHT.h"
 
 // Thong tin ket noi
-const char* ssid = "Truong";
-const char* password = "0987654321";
-const char* mqtt_server = "172.30.207.117";
+const char* ssid = "P806";
+const char* password = "12345689";
+const char* mqtt_server = "192.168.1.105";
 const int mqtt_port = 7997;
 const char* mqtt_user = "truong";
 const char* mqtt_pwd = "truong0709";

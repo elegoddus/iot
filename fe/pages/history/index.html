@@ -12,9 +12,21 @@
         <div class="nav-left">
             <a href="../../index.html" class="logo"><i class="fa-solid fa-layer-group"></i> IOT DASHBOARD</a>
             <ul class="nav-links">
-                <li><a href="../../index.html">DASHBOARD</a></li>
-                <li><a href="../datasensor/index.html">DATA SENSOR</a></li>
-                <li><a href="#" class="active">ACTION HISTORY</a></li>
+                <li>
+                    <div class="nav-item-wrap">
+                        <a href="../../index.html" class="nav-item">DASHBOARD</a>
+                    </div>
+                </li>
+                <li>
+                    <div class="nav-item-wrap">
+                        <a href="../datasensor/index.html" class="nav-item">DATA SENSOR</a>
+                    </div>
+                </li>
+                <li>
+                    <div class="nav-item-wrap active">
+                        <a href="index.html" class="nav-item">ACTION HISTORY</a>
+                    </div>
+                </li>
             </ul>
         </div>
         <div class="nav-right">
@@ -26,13 +38,11 @@
     </nav>
 
     <div class="container">
-        <div class="tech-panel">
-            <div class="panel-header">
-                <div class="header-left">
-                    <div class="panel-title">NHẬT KÝ ĐIỀU KHIỂN</div>
-                </div>
+        <div class="tech-panel-wrapper">
+            <div class="top-bar-area">
+                <div class="panel-title-container">NHẬT KÝ ĐIỀU KHIỂN</div>
                 
-                <div class="header-right">
+                <div class="white-filler">
                     <div class="rows-selector">
                         <label>Hiển thị:</label>
                         <select id="rows-history" class="custom-select">
@@ -54,7 +64,7 @@
                 </div>
             </div>
 
-            <div class="table-responsive">
+            <div class="panel-main-body">
                 <table class="data-table">
                     <thead>
                         <tr>

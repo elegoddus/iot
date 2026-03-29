@@ -16,101 +16,135 @@
                 <i class="fa-solid fa-layer-group"></i> IOT DASHBOARD
             </a>
             <ul class="nav-links">
-                <li><a href="index.html" class="active">DASHBOARD</a></li>
-                <li><a href="pages/datasensor/index.html">DATA SENSOR</a></li>
-                <li><a href="pages/history/index.html">ACTION HISTORY</a></li>
+                <li>
+                    <div class="nav-item-wrap active">
+                        <a href="index.html" class="nav-item">DASHBOARD</a>
+                    </div>
+                </li>
+                <li>
+                    <div class="nav-item-wrap">
+                        <a href="pages/datasensor/index.html" class="nav-item">DATA SENSOR</a>
+                    </div>
+                </li>
+                <li>
+                    <div class="nav-item-wrap">
+                        <a href="pages/history/index.html" class="nav-item">ACTION HISTORY</a>
+                    </div>
+                </li>
             </ul>
         </div>
         <div class="nav-right">
-            <a href="pages/profile/index.html" class="user-profile-link">
-                <div class="name">Lê Xuân Trường</div>
-                <div class="avatar">T</div>
+            <a href="#" class="user-profile-link">
+                <div class="name">LÊ XUÂN TRƯỜNG</div>
             </a>
         </div>
     </nav>
 
     <div class="container">
         <div class="grid-system">
-            <div class="mech-card" id="card-temp">
-                <div class="card-left">
-                    <div class="card-title">NHIỆT ĐỘ</div>
-                    <div class="card-value-box">
-                        <span id="val-temp">--</span><span class="unit">°C</span>
+            <div class="sensor-card-wrapper">
+                <div class="mech-card" id="card-temp">
+                    <div class="card-left">
+                        <div class="card-title">NHIỆT ĐỘ</div>
+                        <div class="card-value-box">
+                            <span id="val-temp">--</span><span class="unit">°C</span>
+                        </div>
                     </div>
+                    <div class="card-right"><i class="fa-solid fa-temperature-three-quarters"></i></div>
                 </div>
-                <div class="card-right"><i class="fa-solid fa-temperature-three-quarters"></i></div>
             </div>
-            <div class="mech-card" id="card-humid">
-                <div class="card-left">
-                    <div class="card-title">ĐỘ ẨM</div>
-                    <div class="card-value-box">
-                        <span id="val-humid">--</span><span class="unit">%</span>
+
+            <div class="sensor-card-wrapper">
+                <div class="mech-card" id="card-humid">
+                    <div class="card-left">
+                        <div class="card-title">ĐỘ ẨM</div>
+                        <div class="card-value-box">
+                            <span id="val-humid">--</span><span class="unit">%</span>
+                        </div>
                     </div>
+                    <div class="card-right"><i class="fa-solid fa-droplet"></i></div>
                 </div>
-                <div class="card-right"><i class="fa-solid fa-droplet"></i></div>
             </div>
-            <div class="mech-card" id="card-light">
-                <div class="card-left">
-                    <div class="card-title">ÁNH SÁNG</div>
-                    <div class="card-value-box">
-                        <span id="val-light">--</span><span class="unit">Lux</span>
+
+            <div class="sensor-card-wrapper">
+                <div class="mech-card" id="card-light">
+                    <div class="card-left">
+                        <div class="card-title">ÁNH SÁNG</div>
+                        <div class="card-value-box">
+                            <span id="val-light">--</span><span class="unit">Lux</span>
+                        </div>
                     </div>
+                    <div class="card-right"><i class="fa-solid fa-sun"></i></div>
                 </div>
-                <div class="card-right"><i class="fa-solid fa-sun"></i></div>
             </div>
         </div>
 
         <div class="bottom-section">
-            <div class="tech-panel">
-                <div class="panel-title">Biểu đồ giám sát</div>
-                <div class="chart-wrapper">
+            <div class="tech-panel-wrapper">
+                <div class="top-bar-area">
+                    <div class="panel-title-container">BIỂU ĐỒ GIÁM SÁT</div>
+                    <div class="white-filler"></div>
+                </div>
+                <div class="panel-main-body chart-wrapper">
                     <canvas id="mainChart"></canvas>
                 </div>
             </div>
             
-            <div class="tech-panel">
-                <div class="panel-title">Bảng điều khiển</div>
-                <div class="control-grid">
+            <div class="tech-panel-wrapper">
+                <div class="top-bar-area">
+                    <div class="panel-title-container">BẢNG ĐIỀU KHIỂN</div>
+                    <div class="white-filler"></div>
+                </div>
+                <div class="panel-main-body control-grid">
                     
-                    <div class="control-btn" id="btn-fan" onclick="toggleDevice('fan')">
-                        <div class="btn-icon-area">
-                            <i class="fa-solid fa-fan"></i>
-                        </div>
-                        <div class="btn-info">
-                            <div class="device-name">QUẠT THÔNG HƠI</div>
-                            <div class="device-status">Đang tắt</div>
-                        </div>
-                        <div class="btn-action">
-                            <i class="fa-solid fa-power-off icon-power"></i>
-                            <i class="fa-solid fa-circle-notch fa-spin icon-loading"></i>
-                        </div>
-                    </div>
-
-                    <div class="control-btn" id="btn-lamp" onclick="toggleDevice('lamp')">
-                        <div class="btn-icon-area">
-                            <i class="fa-solid fa-lightbulb"></i>
-                        </div>
-                        <div class="btn-info">
-                            <div class="device-name">ĐÈN CHÙM</div>
-                            <div class="device-status">Đang tắt</div>
-                        </div>
-                        <div class="btn-action">
-                            <i class="fa-solid fa-power-off icon-power"></i>
-                            <i class="fa-solid fa-circle-notch fa-spin icon-loading"></i>
+                    <div class="btn-wrapper" id="wrap-fan">
+                        <div class="control-btn" onclick="toggleDevice('D1', 'fan')">
+                            <div class="btn-icon-area">
+                                <img src="images/Fan.svg" alt="Fan">
+                            </div>
+                            <div class="btn-info">
+                                <div class="device-name">QUẠT THÔNG HƠI</div>
+                                <div class="device-status">Đang tải...</div>
+                            </div>
+                            <div class="btn-action">
+                                <img src="images/StatusOff.svg" class="status-icon icon-off">
+                                <img src="images/StatusLoad.svg" class="status-icon icon-load">
+                                <img src="images/StatusOn.svg" class="status-icon icon-on">
+                            </div>
                         </div>
                     </div>
 
-                    <div class="control-btn" id="btn-ac" onclick="toggleDevice('ac')">
-                        <div class="btn-icon-area">
-                            <i class="fa-solid fa-bolt"></i>
+                    <div class="btn-wrapper" id="wrap-lamp1">
+                        <div class="control-btn" onclick="toggleDevice('D2', 'lamp1')">
+                            <div class="btn-icon-area">
+                                <img src="images/Light1.svg" alt="Chandelier">
+                            </div>
+                            <div class="btn-info">
+                                <div class="device-name">ĐÈN CHÙM</div>
+                                <div class="device-status">Đang tải...</div>
+                            </div>
+                            <div class="btn-action">
+                                <img src="images/StatusOff.svg" class="status-icon icon-off">
+                                <img src="images/StatusLoad.svg" class="status-icon icon-load">
+                                <img src="images/StatusOn.svg" class="status-icon icon-on">
+                            </div>
                         </div>
-                        <div class="btn-info">
-                            <div class="device-name">ĐÈN HUỲNH QUANG</div>
-                            <div class="device-status">Đang tắt</div>
-                        </div>
-                        <div class="btn-action">
-                            <i class="fa-solid fa-power-off icon-power"></i>
-                            <i class="fa-solid fa-circle-notch fa-spin icon-loading"></i>
+                    </div>
+
+                    <div class="btn-wrapper" id="wrap-lamp2">
+                        <div class="control-btn" onclick="toggleDevice('D3', 'lamp2')">
+                            <div class="btn-icon-area">
+                                <img src="images/Light2.svg" alt="Light">
+                            </div>
+                            <div class="btn-info">
+                                <div class="device-name">ĐÈN HUỲNH QUANG</div>
+                                <div class="device-status">Đang tải...</div>
+                            </div>
+                            <div class="btn-action">
+                                <img src="images/StatusOff.svg" class="status-icon icon-off">
+                                <img src="images/StatusLoad.svg" class="status-icon icon-load">
+                                <img src="images/StatusOn.svg" class="status-icon icon-on">
+                            </div>
                         </div>
                     </div>
 
