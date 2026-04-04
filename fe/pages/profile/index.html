@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,34 +9,51 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
+
 <body>
     <canvas id="circuit-canvas"></canvas>
-    
+
     <nav class="top-navbar">
         <div class="nav-left">
             <a href="../../index.html" class="logo"><i class="fa-solid fa-layer-group"></i> IOT DASHBOARD</a>
             <ul class="nav-links">
-                <li><a href="../../index.html">DASHBOARD</a></li>
-                <li><a href="../datasensor/index.html">DATA SENSOR</a></li>
-                <li><a href="../history/index.html">ACTION HISTORY</a></li>
+                <li>
+                    <div class="nav-item-wrap">
+                        <a href="../../index.html" class="nav-item">DASHBOARD</a>
+                    </div>
+                </li>
+                <li>
+                    <div class="nav-item-wrap">
+                        <a href="../datasensor/index.html" class="nav-item">DATA SENSOR</a>
+                    </div>
+                </li>
+                <li>
+                    <div class="nav-item-wrap">
+                        <a href="../history/index.html" class="nav-item">ACTION HISTORY</a>
+                    </div>
+                </li>
             </ul>
         </div>
         <div class="nav-right">
-             <a href="#" style="color: #636e72; font-weight: bold; text-decoration: none;">PROFILES <i class="fa-solid fa-right-from-bracket"></i></a>
+            <a href="index.html" class="user-profile-link active">
+                <div class="name">Lê Xuân Trường</div>
+                <div class="avatar">T</div>
+            </a>
         </div>
     </nav>
 
     <div class="container">
         <div class="tech-panel cyber-card glass-effect">
-             <div class="profile-content-grid">
-            
+            <div class="profile-content-grid">
+
                 <div class="identity-col">
                     <div class="avatar-wrapper">
                         <div class="hex-avatar">
-                            <img src="../../images/avatar.png" alt="Avatar"> </div>
+                            <img src="../../images/avatar.png" alt="Avatar">
+                        </div>
                         <div class="pulse-ring"></div>
                     </div>
-                    
+
                     <div class="identity-text">
                         <h1 class="cyber-name">LÊ XUÂN TRƯỜNG</h1>
                         <div class="cyber-role">
@@ -48,7 +66,7 @@
                 </div>
 
                 <div class="details-col">
-                    
+
                     <h3 class="section-title"><i class="fa-solid fa-id-card"></i> THÔNG TIN CÁ NHÂN</h3>
                     <div class="info-blocks-grid">
                         <div class="info-block">
@@ -103,13 +121,20 @@
                         </div>
 
                     </div> -->
-                    
+
                     <div class="social-actions" style="margin-top: 30px;">
-                        <a href="#" class="cyber-btn btn-github"><i class="fa-brands fa-github"></i> Github</a>
-                        <a href="#" class="cyber-btn btn-email"><i class="fa-solid fa-envelope"></i> Email</a>
-                        <a href="#" class="cyber-btn btn-api"><i class="fa-solid fa-plug"></i> API</a>
-                        <a href="#" class="cyber-btn btn-figma"><i class="fa-solid fa-figma"></i> Figma</a>
-                        <a href="#" class="cyber-btn btn-report"><i class="fa-solid fa-file-lines"></i> Report</a>
+                        <a href="https://github.com/elegoddus/iot" target="_blank" class="cyber-btn btn-github">
+                            <i class="fa-brands fa-github"></i> Github
+                        </a>
+                        <a href="http://localhost:5000/api-docs" target="_blank" class="cyber-btn btn-api">
+                            <i class="fa-solid fa-plug"></i> API Docs
+                        </a>
+                        <a href="https://www.figma.com/design/xcuuLMZcWMhDJ0okKwed1p/Untitled?node-id=0-1&t=7K3lW40EAZVjab4X-1" target="_blank" class="cyber-btn btn-figma">
+                            <i class="fa-brands fa-figma"></i> Figma
+                        </a>
+                        <a href="https://docs.google.com/document/d/1j6-KrXQ3UqbygU8NR1kXBPwLYMtK6SiFXajrgPql2e4/edit?usp=sharing" target="_blank" class="cyber-btn btn-report">
+                            <i class="fa-solid fa-file-lines"></i> Docs
+                        </a>
                     </div>
 
                 </div>
@@ -119,4 +144,5 @@
 
     <script src="script.js"></script>
 </body>
+
 </html>

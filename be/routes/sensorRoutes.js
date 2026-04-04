@@ -2,7 +2,16 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../config/db');
 
-// Get current sensor data
+/**
+ * @swagger
+ * /api/sensors/current:
+ *   get:
+ *     summary: Lấy dữ liệu cảm biến mới nhất
+ *     description: Trả về giá trị đo được gần nhất của tất cả các cảm biến.
+ *     responses:
+ *       200:
+ *         description: Thông tin cảm biến mới nhất
+ */
 router.get('/current', async (req, res) => {
     try {
         const [rows] = await pool.query(`
@@ -22,7 +31,47 @@ router.get('/current', async (req, res) => {
     }
 });
 
-// Get sensor history with pagination, sort, and search
+/**
+ * @swagger
+ * /api/sensors/history:
+ *   get:
+ *     summary: Lấy lịch sử dữ liệu cảm biến (có phân trang)
+ *     description: Phục vụ bảng dữ liệu Sensor History.
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *         description: Số trang hiện tại
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *         description: Số dòng trên 1 trang
+ *       - in: query
+ *         name: search
+ *         schema:
+ *           type: string
+ *         description: Trị số hoặc Tên thiết bị cần tìm kiếm
+ *       - in: query
+ *         name: sensorId
+ *         schema:
+ *           type: string
+ *         description: Lọc theo cảm biến (all | TEMP_01 | HUMID_01 | LIGHT_01)
+ *       - in: query
+ *         name: sortBy
+ *         schema:
+ *           type: string
+ *         description: Cột dùng để sắp xếp (mặc định recorded_at)
+ *       - in: query
+ *         name: order
+ *         schema:
+ *           type: string
+ *         description: Hướng sắp xếp ASC / DESC
+ *     responses:
+ *       200:
+ *         description: Lịch sử dữ liệu cảm biến
+ */
 router.get('/history', async (req, res) => {
     try {
         let { page = 1, limit = 10, search = '', sensorId = 'all', sortBy = 'recorded_at', order = 'DESC' } = req.query;
@@ -44,8 +93,14 @@ router.get('/history', async (req, res) => {
         }
 
         if (search) {
-            query += ` AND (s.name LIKE ? OR sd.recorded_at LIKE ?)`;
-            params.push(`%${search}%`, `%${search}%`);
+            const isNumeric = !isNaN(search) && search.trim() !== '';
+            if (isNumeric) {
+                query += ` AND (CAST(sd.value AS CHAR) LIKE ?)`;
+                params.push(`%${search}%`);
+            } else {
+                query += ` AND (s.name LIKE ? OR DATE_FORMAT(sd.recorded_at, '%d/%m/%Y %H:%i:%s') LIKE ? OR DATE_FORMAT(sd.recorded_at, '%Y-%m-%d %H:%i:%s') LIKE ?)`;
+                params.push(`%${search}%`, `%${search}%`, `%${search}%`);
+            }
         }
 
         // Validate sortBy and order to prevent SQL injection
@@ -71,8 +126,14 @@ router.get('/history', async (req, res) => {
             countParams.push(sensorId);
         }
         if (search) {
-            countQuery += ` AND (s.name LIKE ? OR sd.recorded_at LIKE ?)`;
-            countParams.push(`%${search}%`, `%${search}%`);
+            const isNumeric = !isNaN(search) && search.trim() !== '';
+            if (isNumeric) {
+                countQuery += ` AND (CAST(sd.value AS CHAR) LIKE ?)`;
+                countParams.push(`%${search}%`);
+            } else {
+                countQuery += ` AND (s.name LIKE ? OR DATE_FORMAT(sd.recorded_at, '%d/%m/%Y %H:%i:%s') LIKE ? OR DATE_FORMAT(sd.recorded_at, '%Y-%m-%d %H:%i:%s') LIKE ?)`;
+                countParams.push(`%${search}%`, `%${search}%`, `%${search}%`);
+            }
         }
         const [countResult] = await pool.query(countQuery, countParams);
         

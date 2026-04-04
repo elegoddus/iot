@@ -3,6 +3,8 @@ const API_URL = 'http://localhost:5000/api';
 const tableBody = document.getElementById('history-table-body');
 const rowsSelect = document.getElementById('rows-history');
 const filterDevice = document.getElementById('filter-device');
+const filterAction = document.getElementById('filter-action');
+const filterStatus = document.getElementById('filter-status');
 const searchInput = document.getElementById('search-history');
 const btnSearch = document.getElementById('btn-search'); // Giả sử có nút này hoặc search bằng phím enter
 const btnPrev = document.getElementById('btn-prev');
@@ -14,7 +16,7 @@ let rowsPerPage = 10;
 let totalPages = 1;
 let currentSearch = '';
 
-async function fetchActionHistory() {
+async function fetchActionHistory(isPolling = false) {
     try {
         const filterVal = filterDevice.value;
         let deviceId = 'all';
@@ -27,11 +29,15 @@ async function fetchActionHistory() {
             limit: rowsPerPage,
             search: currentSearch,
             deviceId: deviceId,
+            actionFilter: filterAction.value,
+            statusFilter: filterStatus.value,
             sortBy: 'created_at',
             order: 'DESC'
         });
 
-        tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 20px;"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải dữ liệu...</td></tr>';
+        if (!isPolling) {
+            tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 20px;"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải dữ liệu...</td></tr>';
+        }
         
         const res = await fetch(`${API_URL}/actions/history?${params.toString()}`);
         const result = await res.json();
@@ -72,8 +78,8 @@ function processActionText(actionStr) {
 
 function processStatus(statusStr) {
     if (statusStr === 'SUCCESS') return { text: 'THÀNH CÔNG', class: 'bg-success' };
-    if (statusStr === 'PROCESSING') return { text: 'LOADING', class: 'bg-pending' };
-    return { text: 'LỖI', class: 'bg-error' };
+    if (statusStr === 'PROCESSING') return { text: 'ĐANG TẢI', class: 'bg-pending' };
+    return { text: 'THẤT BẠI', class: 'bg-error' };
 }
 
 function renderTable(data) {
@@ -88,11 +94,17 @@ function renderTable(data) {
         const tr = document.createElement('tr');
         // Chỉ lấy giờ phút giây theo Figma: 05:32:40
         const dateObj = new Date(item.created_at);
-        const timeStr = [
+        const datePart = [
+            String(dateObj.getDate()).padStart(2, '0'),
+            String(dateObj.getMonth() + 1).padStart(2, '0'),
+            dateObj.getFullYear()
+        ].join('/');
+        const timePart = [
             String(dateObj.getHours()).padStart(2, '0'),
             String(dateObj.getMinutes()).padStart(2, '0'),
             String(dateObj.getSeconds()).padStart(2, '0')
         ].join(':');
+        const timeStr = `${timePart} ${datePart}`;
 
         const devIcon = getDeviceIcon(item.device_id);
         const actionInfo = processActionText(item.action);
@@ -118,6 +130,16 @@ rowsSelect.addEventListener('change', (e) => {
 });
 
 filterDevice.addEventListener('change', () => {
+    currentPage = 1;
+    fetchActionHistory();
+});
+
+filterAction.addEventListener('change', () => {
+    currentPage = 1;
+    fetchActionHistory();
+});
+
+filterStatus.addEventListener('change', () => {
     currentPage = 1;
     fetchActionHistory();
 });
@@ -156,7 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Refresh history periodically if it contains pending items
     setInterval(() => {
         if (currentPage === 1 && currentSearch === '') {
-            fetchActionHistory();
+            fetchActionHistory(true);
         }
     }, 5000);
 });

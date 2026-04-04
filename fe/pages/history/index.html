@@ -59,6 +59,19 @@
                             <option value="ac">Đèn huỳnh quang</option>
                         </select>
 
+                        <select id="filter-action" class="custom-select">
+                            <option value="all">Mọi hành động</option>
+                            <option value="TURN_ON">Mở (ON)</option>
+                            <option value="TURN_OFF">Tắt (OFF)</option>
+                        </select>
+
+                        <select id="filter-status" class="custom-select">
+                            <option value="all">Mọi trạng thái</option>
+                            <option value="SUCCESS">Thành công</option>
+                            <option value="FAILED">Thất bại / Lỗi</option>
+                            <option value="PROCESSING">Đang tải</option>
+                        </select>
+
                         <input type="text" id="search-history" class="custom-input" placeholder="Tìm ID hoặc Thời gian...">
                         
                         <button class="btn-search" id="btn-search">
@@ -90,6 +103,6 @@
             </div>
         </div>
     </div>
-    <script src="script.js"></script>
+    <script src="script.js?v=2"></script>
 </body>
 </html>

@@ -73,11 +73,17 @@ function renderTable(data) {
     data.forEach(item => {
         const tr = document.createElement('tr');
         const dateObj = new Date(item.recorded_at);
-        const timeStr = [
+        const datePart = [
+            String(dateObj.getDate()).padStart(2, '0'),
+            String(dateObj.getMonth() + 1).padStart(2, '0'),
+            dateObj.getFullYear()
+        ].join('/');
+        const timePart = [
             String(dateObj.getHours()).padStart(2, '0'),
             String(dateObj.getMinutes()).padStart(2, '0'),
             String(dateObj.getSeconds()).padStart(2, '0')
         ].join(':');
+        const timeStr = `${timePart} ${datePart}`;
 
         const icon = getSensorIcon(item.sensor_id);
         

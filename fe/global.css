@@ -124,12 +124,39 @@ body {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 8px 25px;
+    padding: 8px 30px 8px 20px;
     background: white;
-    border: 2px solid #ED8123;
+    box-shadow: inset 0 0 0 2px #ED8123;
     clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
     transition: all 0.3s;
-    font-weight: 600;
+    font-weight: 700;
+}
+
+.user-profile-link:hover,
+.user-profile-link.active {
+    background: linear-gradient(90deg, #200479, #972004);
+    box-shadow: inset 0 0 0 2px transparent;
+    color: white;
+}
+
+.user-profile-link .avatar {
+    background: #ED8123;
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.9em;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.user-profile-link:hover .avatar,
+.user-profile-link.active .avatar {
+    background: white;
+    color: #972004;
 }
 
 /* =========================================

@@ -246,15 +246,18 @@ async function toggleDevice(deviceId, uiId) {
             body: JSON.stringify({ deviceId, action })
         });
         
-        // Timeout 5 giây nếu không nhận được phản hồi từ backend
+        // Timeout 10 giây SCADA (Rollback trạng thái an toàn)
         setTimeout(() => {
             if (wrap.classList.contains('loading') && wrap.dataset.expected === action) {
                 wrap.classList.remove('loading');
                 delete wrap.dataset.expected;
-                statusText.innerText = 'Chờ đồng bộ...';
-                // Nếu timeout, cho phép fetchDeviceStatus lần sau chép đè lại trạng thái thật
+                
+                if (isCurrentlyOn) {
+                    wrap.classList.add('active'); // Hoàn tác trạng thái Bật
+                }
+                statusText.innerText = 'Lỗi mất kết nối';
             }
-        }, 5000);
+        }, 10000);
     } catch(e) {
         console.error("Lỗi điều khiển thiết bị", e);
         wrap.classList.remove('loading');

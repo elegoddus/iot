@@ -4,7 +4,29 @@ const pool = require('../config/db');
 const { v4: uuidv4 } = require('uuid');
 const mqttClient = require('../config/mqtt');
 
-// Send control command
+/**
+ * @swagger
+ * /api/actions/control:
+ *   post:
+ *     summary: Gửi lệnh điều khiển thiết bị
+ *     description: Push lệnh ON/OFF tới MQTT Broker để điều khiển thiết bị ESP8266.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               deviceId:
+ *                 type: string
+ *                 description: ID thiết bị (D1, D2, D3, ALL)
+ *               action:
+ *                 type: string
+ *                 description: Lệnh cấp (ON, OFF, BLINK)
+ *     responses:
+ *       200:
+ *         description: Đã gởi lệnh qua MQTT
+ */
 router.post('/control', async (req, res) => {
     try {
         const { deviceId, action } = req.body; 
@@ -49,13 +71,32 @@ router.post('/control', async (req, res) => {
              }
         }
 
+        // Check MQTT connection immediately before buffering
+        if (!mqttClient.connected) {
+            await pool.query(`UPDATE action_history SET status = 'FAILED' WHERE request_id LIKE ?`, [`${reqId}%`]);
+            return res.status(500).json({ error: 'MQTT Broker disconnected' });
+        }
+
         // Send MQTT command
-        mqttClient.publish('truongguitin/control', mqttCommand, (err) => {
+        mqttClient.publish('truongguitin/control', mqttCommand, async (err) => {
             if (err) {
                 console.error("MQTT Publish error:", err);
+                await pool.query(`UPDATE action_history SET status = 'FAILED' WHERE request_id LIKE ?`, [`${reqId}%`]);
                 return res.status(500).json({ error: 'Failed to send MQTT command' });
             }
             res.json({ message: 'Command sent', reqId, status: 'PROCESSING' });
+
+            // Industrial IoT Standard: Timeout check
+            setTimeout(async () => {
+                try {
+                    await pool.query(
+                        `UPDATE action_history SET status = 'FAILED' WHERE request_id LIKE ? AND status = 'PROCESSING'`,
+                        [`${reqId}%`]
+                    );
+                } catch (e) {
+                    console.error("Lỗi Timeout logic", e);
+                }
+            }, 10000);
         });
 
     } catch (err) {
@@ -64,10 +105,50 @@ router.post('/control', async (req, res) => {
     }
 });
 
-// Get action history
+/**
+ * @swagger
+ * /api/actions/history:
+ *   get:
+ *     summary: Lấy lịch sử điều khiển thiết bị
+ *     description: Lịch sử thao tác (có phân trang, tìm kiếm, lọc theo thiết bị).
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *         description: Số trang hiện tại
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *         description: Số dòng trên 1 trang
+ *       - in: query
+ *         name: search
+ *         schema:
+ *           type: string
+ *         description: Tìm ID hoặc Ngày/Giờ
+ *       - in: query
+ *         name: deviceId
+ *         schema:
+ *           type: string
+ *         description: ID Thiết bị (all, D1, D2, D3)
+ *       - in: query
+ *         name: actionFilter
+ *         schema:
+ *           type: string
+ *         description: Lọc hành động (all, TURN_ON, TURN_OFF)
+ *       - in: query
+ *         name: statusFilter
+ *         schema:
+ *           type: string
+ *         description: Lọc trạng thái (all, SUCCESS, FAILED, PROCESSING)
+ *     responses:
+ *       200:
+ *         description: Danh sách lịch sử điều khiển
+ */
 router.get('/history', async (req, res) => {
     try {
-        let { page = 1, limit = 10, search = '', deviceId = 'all', sortBy = 'created_at', order = 'DESC' } = req.query;
+        let { page = 1, limit = 10, search = '', deviceId = 'all', actionFilter = 'all', statusFilter = 'all', sortBy = 'created_at', order = 'DESC' } = req.query;
         page = parseInt(page);
         limit = parseInt(limit);
         const offset = (page - 1) * limit;
@@ -84,10 +165,26 @@ router.get('/history', async (req, res) => {
             query += ` AND a.device_id = ?`;
             params.push(deviceId);
         }
+        
+        if (actionFilter !== 'all') {
+            query += ` AND a.action = ?`;
+            params.push(actionFilter);
+        }
+
+        if (statusFilter !== 'all') {
+            query += ` AND a.status = ?`;
+            params.push(statusFilter);
+        }
 
         if (search) {
-            query += ` AND (d.name LIKE ? OR a.action LIKE ? OR a.created_at LIKE ?)`;
-            params.push(`%${search}%`, `%${search}%`, `%${search}%`);
+            const isNumeric = !isNaN(search) && search.trim() !== '';
+            if (isNumeric) {
+                query += ` AND (a.id = ? OR a.request_id LIKE ?)`;
+                params.push(parseInt(search), `%${search}%`);
+            } else {
+                query += ` AND (d.name LIKE ? OR a.action LIKE ? OR DATE_FORMAT(a.created_at, '%d/%m/%Y %H:%i:%s') LIKE ? OR DATE_FORMAT(a.created_at, '%Y-%m-%d %H:%i:%s') LIKE ?)`;
+                params.push(`%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`);
+            }
         }
 
         const validSortColumns = ['id', 'device_name', 'action', 'status', 'created_at'];
@@ -110,9 +207,23 @@ router.get('/history', async (req, res) => {
             countQuery += ` AND a.device_id = ?`;
             countParams.push(deviceId);
         }
+        if (actionFilter !== 'all') {
+            countQuery += ` AND a.action = ?`;
+            countParams.push(actionFilter);
+        }
+        if (statusFilter !== 'all') {
+            countQuery += ` AND a.status = ?`;
+            countParams.push(statusFilter);
+        }
         if (search) {
-            countQuery += ` AND (d.name LIKE ? OR a.action LIKE ? OR a.created_at LIKE ?)`;
-            countParams.push(`%${search}%`, `%${search}%`, `%${search}%`);
+            const isNumeric = !isNaN(search) && search.trim() !== '';
+            if (isNumeric) {
+                countQuery += ` AND (a.id = ? OR a.request_id LIKE ?)`;
+                countParams.push(parseInt(search), `%${search}%`);
+            } else {
+                countQuery += ` AND (d.name LIKE ? OR a.action LIKE ? OR DATE_FORMAT(a.created_at, '%d/%m/%Y %H:%i:%s') LIKE ? OR DATE_FORMAT(a.created_at, '%Y-%m-%d %H:%i:%s') LIKE ?)`;
+                countParams.push(`%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`);
+            }
         }
         const [countResult] = await pool.query(countQuery, countParams);
         

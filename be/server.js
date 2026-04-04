@@ -9,8 +9,15 @@ const sensorRoutes = require('./routes/sensorRoutes');
 const deviceRoutes = require('./routes/deviceRoutes');
 const actionRoutes = require('./routes/actionRoutes');
 
+// Import swagger UI
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./swagger');
+
 app.use(cors());
 app.use(express.json());
+
+// Set up Swagger UI Route
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // basic health check
 app.get('/api/health', (req, res) => {
