@@ -268,9 +268,20 @@ async function toggleDevice(deviceId, uiId) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Khởi tạo đồ thị
     initChart();
-    loadChartData(); // Khôi phục biểu đồ từ localStorage
     
+    // Khởi tạo VanillaTilt cho Sensor Cards
+    if (typeof VanillaTilt !== "undefined") {
+        VanillaTilt.init(document.querySelectorAll(".sensor-card-wrapper"), {
+            max: 8,
+            speed: 400,
+            glare: true,
+            "max-glare": 0.2,
+        });
+    }
+    
+    loadChartData(); // Khôi phục biểu đồ từ localStorage
     // Fetch dữ liệu mỗi 2 giây
     setInterval(() => {
         fetchSensorData();

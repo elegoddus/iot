@@ -1,19 +1,15 @@
-/* =========================================
-   dashboard.css
-   Style riêng cho trang chủ Dashboard
-   ========================================= */
+/* dashboard.css - Component Styling */
 
-/* BIẾN MÀU RIÊNG CHO THIẾT BỊ */
+/* DEVICE COLORS */
 :root {
-    --color-fan: #0bdcb5; /* Teal for Fan */
-    --color-lamp1: #f3c200; /* Yellow for Lamp 1 */
-    --color-lamp2: #a561b8; /* Purple for Fluorescent */
-    --border-grad: linear-gradient(90deg, #200479, #cbb400); /* Border gradient */
+    --color-fan: #0bdcb5;
+    --color-lamp1: #f3c200;
+    --color-lamp2: #a561b8;
+    /* Birthday themed dark gradient #070920 (07-09-20) to #200409 (20-04-09) */
+    --border-grad: linear-gradient(90deg, #070920, #200479, #200409); 
 }
 
-/* =========================================
-   1. SENSOR CARDS (Ô CẢM BIẾN)
-   ========================================= */
+/* SENSOR CARDS */
 .grid-system {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -24,7 +20,6 @@
 .sensor-card-wrapper {
     position: relative;
     height: 140px;
-    /* Cắt góc */
     clip-path: polygon(25px 0, 100% 0, 100% calc(100% - 25px), calc(100% - 25px) 100%, 0 100%, 0 25px);
     background: white; 
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
@@ -42,7 +37,7 @@
     color: var(--text-primary);
 }
 
-/* Phần bên trái (Text) */
+/* Text Container */
 .card-left {
     display: flex;
     flex-direction: column;
@@ -74,7 +69,7 @@
     opacity: 0.8;
 }
 
-/* Phần bên phải (Icon) */
+/* Icon Container */
 .card-right {
     display: flex;
     align-items: center;
@@ -88,9 +83,7 @@
     transform: translateY(5px);
 }
 
-/* =========================================
-   2. BOTTOM SECTION
-   ========================================= */
+/* BOTTOM SECTION */
 .bottom-section {
     display: grid;
     grid-template-columns: 2fr 1fr;
@@ -103,21 +96,23 @@
     width: 100%;
 }
 
-/* =========================================
-   3. CONTROL BUTTONS (NÚT BẤM)
-   ========================================= */
+/* CONTROL BUTTONS */
 .control-grid {
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-/* Khung chứa viền Gradient */
+/* Button Outer Gradient Wrap */
 .btn-wrapper {
-    padding: 3px; /* Viền dày hơn */
-    background: linear-gradient(90deg, #200479, #792004); /* Gradient màu như user yêu cầu */
+    padding: 3px;
+    background: linear-gradient(90deg, #070920, #200479, #972004); /* Birthday theme 07-09-2004 */
     clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
-    transition: all 0.3s ease;
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.btn-wrapper:hover {
+    transform: scale(1.03) translateX(5px);
 }
 
 .control-btn {
@@ -166,7 +161,7 @@
     font-weight: 500;
 }
 
-/* KHUNG TRÒN CHỨA ICON BÊN TRONG NÚT */
+/* Internal IconButton */
 .btn-action {
     width: 45px;
     height: 45px;
@@ -184,10 +179,10 @@
 }
 
 
-/* --- OFF (Mặc định) --- */
+/* Status Toggles */
 .btn-wrapper:not(.active):not(.loading) .icon-off { display: block; }
 
-/* KHI LOADING */
+/* Status Loading */
 .btn-wrapper.loading .control-btn {
     background: #e2eaf0; /* Light greyish */
 }
@@ -203,8 +198,7 @@
     filter: invert(0.6) sepia(0) saturate(0) hue-rotate(0deg); /* Light Grey */
 }
 
-/* KHI ACTIVE (BẬT) */
-/* Phải kết hợp :not(.loading) để không hiện loạn nếu lỡ có cả 2 class */
+/* Status Active */
 .btn-wrapper.active:not(.loading).fan .control-btn { background: #d0f7ef; }
 .btn-wrapper.active:not(.loading).lamp1 .control-btn { background: #fff5cc; }
 .btn-wrapper.active:not(.loading).lamp2 .control-btn { background: #f2e6f4; }

@@ -1,35 +1,34 @@
-/* =========================================
-   STYLE CIRCUIT BOARD EFFECT
-   ========================================= */
+/* Profile Component Styles */
 
 body {
     background-color: #111 !important; /* Nền đen sâu */
     overflow-x: hidden;
 }
 
-/* Canvas phủ toàn màn hình làm nền */
+/* Background Canvas */
 #circuit-canvas {
     position: fixed;
     top: 0; left: 0;
     width: 100%; height: 100%;
     z-index: -1;
-    background: #0b0b0b; /* Màu nền gốc cực tối */
+    background: #070904; /* Using birthday dark color 070904 */
 }
 
-/* Glass Effect cho thẻ Card để nhìn xuyên thấu mạch điện */
+/* Glass Effect Panel */
 .glass-effect {
-    background: rgba(20, 20, 20, 0.6) !important; /* Đen trong suốt */
+    background: rgba(7, 9, 32, 0.6) !important; /* Birthday tint */
     backdrop-filter: blur(8px);
-    border: 1px solid rgba(230, 126, 34, 0.3); /* Viền cam mờ */
+    border: 1px solid rgba(230, 126, 34, 0.3);
     box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
-    color: #fff; /* Chữ trắng cho nổi trên nền đen */
+    color: #fff;
 }
 
-/* --- ĐIỀU CHỈNH MÀU SẮC CONTENT CHO HỢP NỀN TỐI --- */
+/* Typography adjusting */
 .cyber-name {
     /* Gradient Cam rực rỡ */
     background: linear-gradient(90deg, #fff 0%, #e67e22 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -59,7 +58,7 @@ body {
 }
 .logo { color: #fff; }
 
-/* CÁC STYLE KHÁC GIỮ NGUYÊN TỪ BÀI TRƯỚC (Grid, Layout...) */
+/* Main Layout structure */
 .profile-content-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 50px; }
 .identity-col { display: flex; flex-direction: column; align-items: center; text-align: center; padding-right: 30px; border-right: 1px dashed #444; }
 .avatar-wrapper { position: relative; width: 180px; height: 180px; margin-bottom: 30px; display: flex; justify-content: center; align-items: center; }
@@ -80,10 +79,8 @@ body {
 .tech-orange { background-color: var(--active-orange); box-shadow: 0 0 15px rgba(230, 126, 34, 0.8); }
 .tech-blue { background-color: #0984e3; box-shadow: 0 0 15px rgba(9, 132, 227, 0.8); }
 .tech-cyan { background-color: #00cec9; box-shadow: 0 0 15px rgba(0, 206, 201, 0.8); }
-.social-actions { display: flex; gap: 15px; }
+.social-actions { display: flex; gap: 15px; flex-wrap: wrap; }
 .cyber-btn { text-decoration: none; padding: 12px 25px; font-weight: 700; font-family: var(--font-tech); border: none; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.3s; clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px); }
-.btn-github { background: #fff; color: #000; }
-.btn-email { background: #0984e3; color: white; }
 .btn-edit { background: var(--active-orange); color: white; margin-left: auto; }
 .cyber-btn:hover { transform: translateY(-3px); box-shadow: 0 0 15px rgba(255,255,255,0.3); }
 

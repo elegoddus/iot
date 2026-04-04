@@ -1,16 +1,15 @@
-/* =========================================
-   1. CORE VARIABLES & RESET
-   ========================================= */
+/* CORE VARIABLES & RESET */
 :root {
-    --bg-app: #f4eaeb; /* Background color approximating the figma image */
+    --bg-app: #f4eaeb;
     --text-primary: #2d3436;
     --card-bg: #ffffff;
     --navbar-bg: #ffffff;
-    --active-gradient: linear-gradient(90deg, #200479, #792004);
-    --inactive-btn-bg: #D4A9A6; /* Example color for inactive navbar */
+    --active-gradient: linear-gradient(90deg, #200479, #972004);
+    --hover-gradient: linear-gradient(90deg, rgba(32,4,121,0.5), rgba(151,32,4,0.5));
     --border-orange: #ED8123;
     --text-gradient: linear-gradient(90deg, #F9A939, #972004);
     --font-tech: 'Segoe UI', sans-serif;
+    --transition-smooth: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 * {
@@ -26,9 +25,7 @@ body {
     overflow-x: hidden;
 }
 
-/* =========================================
-   2. NAVBAR
-   ========================================= */
+/* NAVBAR */
 .top-navbar {
     background-color: var(--navbar-bg);
     height: 70px;
@@ -89,7 +86,7 @@ body {
     transition: all 0.3s ease;
 }
 
-/* 1. Trang đang chọn (active): viền cam, màu nổi bật gradient 200479 và 972004 */
+/* State active */
 .nav-item-wrap.active {
     background: #ED8123; /* Viền cam */
 }
@@ -98,7 +95,7 @@ body {
     color: white; /* Màu nổi bật */
 }
 
-/* 2. Khi di chuột vào (hover): ẩn viền, màu nhạt, alpha 50% */
+/* State hover */
 .nav-item-wrap:hover {
     background: transparent; /* Ẩn viền cam */
 }
@@ -107,12 +104,10 @@ body {
     color: white;
 }
 
-/* 3. Khi không chọn: chỉ có viền cam (từ nav-item-wrap), nền trắng (từ nav-item) */
 
 
-/* =========================================
-   3. PROFILE LINK
-   ========================================= */
+
+/* PROFILE LINK */
 .nav-right {
     display: flex;
     align-items: center;
@@ -125,18 +120,35 @@ body {
     align-items: center;
     gap: 12px;
     padding: 8px 30px 8px 20px;
-    background: white;
-    box-shadow: inset 0 0 0 2px #ED8123;
-    clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
     transition: all 0.3s;
     font-weight: 700;
+    
+    position: relative;
+    z-index: 1;
+    background: #ED8123; /* Border color for inactive */
+    clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
+}
+
+.user-profile-link::before {
+    content: '';
+    position: absolute;
+    top: 2px; left: 2px; right: 2px; bottom: 2px;
+    z-index: -1;
+    background: white;
+    transition: all 0.3s;
+    clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);
 }
 
 .user-profile-link:hover,
 .user-profile-link.active {
-    background: linear-gradient(90deg, #200479, #972004);
-    box-shadow: inset 0 0 0 2px transparent;
     color: white;
+}
+
+.user-profile-link:hover::before,
+.user-profile-link.active::before {
+    background: linear-gradient(90deg, #200479, #972004);
+    top: 0; left: 0; right: 0; bottom: 0;
+    clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
 }
 
 .user-profile-link .avatar {
@@ -159,9 +171,7 @@ body {
     color: #972004;
 }
 
-/* =========================================
-   4. LAYOUT CONT & PANEL
-   ========================================= */
+/* LAYOUT CONT & PANEL */
 .container {
     max-width: 1200px;
     margin: 30px auto;

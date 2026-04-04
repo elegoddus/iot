@@ -1,4 +1,4 @@
-/* Kế thừa style header từ trang datasensor cho đồng bộ */
+/* History Panel Header */
 .panel-header {
     display: flex;
     justify-content: space-between;
@@ -8,7 +8,7 @@
     padding-bottom: 15px;
 }
 
-/* Header Action / Khối trên cùng */
+/* Filter Controls */
 .header-right { display: flex; gap: 20px; align-items: center; }
 .rows-selector { font-size: 0.9em; color: #888; display: flex; align-items: center; gap: 8px; }
 .rows-selector select { padding: 8px 12px; border: 1px solid #e0e0e0; border-radius: 4px; outline: none; color: #888; }
@@ -17,9 +17,7 @@
 .filter-box select { padding: 8px 12px; border: 1px solid #e0e0e0; border-radius: 4px; outline: none; color: #888; }
 .btn-search { padding: 8px 15px; background-color: #ED8123; color: white; border: none; border-radius: 4px; cursor: pointer; }
 
-/* =========================================
-   TABLE STYLE (FIGMA)
-   ========================================= */
+/* Table UI */
 .data-table {
     width: 100%;
     border-collapse: collapse;
@@ -49,11 +47,18 @@
     vertical-align: middle;
 }
 
-.data-table tbody tr:hover {
-    background-color: #fcfcfc;
+/* Table Rows Transition */
+.data-table tbody tr {
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-/* TEXT MÀU XÁM DÀNH CHO ID / TIME */
+.data-table tbody tr:hover {
+    background-color: #f7f9fc;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    transform: scale(1.01) translateX(5px);
+}
+
+/* ID & Time Column */
 .col-id {
     color: #b3b3b3;
 }
@@ -61,7 +66,7 @@
     color: #b3b3b3;
 }
 
-/* THIẾT BỊ COLUMN */
+/* Device Column */
 .col-dev {
     display: flex;
     align-items: center;
@@ -70,7 +75,7 @@
     color: #a0a0a0;
 }
 
-/* MÀU SẮC TRẠNG THÁI THEO FIGMA (Light Pill) */
+/* Status Labels */
 .status-badge {
     padding: 6px 15px;
     border-radius: 20px;
@@ -100,7 +105,7 @@
     border: 1px solid #e74c3c;
 }
 
-/* HÀNH ĐỘNG (ON / OFF) - MÀU XÁM THEO FIGMA */
+/* Action Text */
 .action-text {
     font-weight: normal;
     font-size: 0.9em;
@@ -110,7 +115,7 @@
     color: #888;
 }
 
-/* Phân trang */
+/* Pagination */
 .pagination {
     margin-top: 30px;
     display: flex;
@@ -126,6 +131,12 @@
     cursor: pointer;
     background: white;
     font-size: 0.9em;
+    transition: all 0.3s;
+}
+
+.page-item:hover {
+    background-color: #fcece0; /* Softer orange for hover */
+    color: #ed8123;
 }
 
 .page-item.active {

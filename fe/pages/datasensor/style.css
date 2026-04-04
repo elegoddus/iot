@@ -1,8 +1,6 @@
-/* =========================================
-   STYLE RIÊNG CHO TRANG DATA SENSOR
-   ========================================= */
+/* Data Sensor Styles */
 
-/* Header của Panel: Tiêu đề + Bộ lọc */
+/* Header / Filter Panel */
 .panel-header {
     display: flex;
     justify-content: space-between;
@@ -12,7 +10,7 @@
     padding-bottom: 15px;
 }
 
-/* Header của Panel: Tiêu đề + Bộ lọc */
+
 .panel-header {
     display: flex;
     justify-content: space-between;
@@ -22,7 +20,7 @@
     padding-bottom: 15px;
 }
 
-/* Khu vực bộ lọc */
+/* Filter Controls */
 .header-right { display: flex; gap: 20px; align-items: center; }
 .rows-selector { font-size: 0.9em; color: #888; display: flex; align-items: center; gap: 8px; }
 .rows-selector select { padding: 8px 12px; border: 1px solid #e0e0e0; border-radius: 4px; outline: none; color: #888; }
@@ -31,9 +29,7 @@
 .filter-box select { padding: 8px 12px; border: 1px solid #e0e0e0; border-radius: 4px; outline: none; color: #888; }
 .btn-search { padding: 8px 15px; background-color: #ED8123; color: white; border: none; border-radius: 4px; cursor: pointer; }
 
-/* =========================================
-   TABLE STYLE (FIGMA)
-   ========================================= */
+/* Table UI */
 .data-table {
     width: 100%;
     border-collapse: collapse;
@@ -63,11 +59,18 @@
     vertical-align: middle;
 }
 
-.data-table tbody tr:hover {
-    background-color: #fcfcfc;
+/* Table Rows Transition */
+.data-table tbody tr {
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-/* TEXT MÀU XÁM DÀNH CHO ID / TIME */
+.data-table tbody tr:hover {
+    background-color: #f7f9fc;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    transform: scale(1.01) translateX(5px);
+}
+
+/* ID & Time Column */
 .col-id {
     color: #b3b3b3;
 }
@@ -75,7 +78,7 @@
     color: #b3b3b3;
 }
 
-/* CẢM BIẾN COLUMN */
+/* Sensor Column */
 .col-sensor {
     display: flex;
     align-items: center;
@@ -83,6 +86,7 @@
 .col-sensor span {
     color: #a0a0a0;
 }
+
 
 .val-text {
     font-size: 1em;
@@ -106,6 +110,12 @@
     cursor: pointer;
     background: white;
     font-size: 0.9em;
+    transition: all 0.3s;
+}
+
+.page-item:hover {
+    background-color: #fcece0; /* Softer orange for hover */
+    color: #ed8123;
 }
 
 .page-item.active {
