@@ -4,9 +4,9 @@ const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'IOT Dashboard API',
+      title: 'Smart Home IoT API',
       version: '1.0.0',
-      description: 'Tài liệu API cho IOT Dashboard tích hợp Smart Home MQTT Data & Actions',
+      description: 'Tài liệu API cho hệ thống Smart Home IoT tích hợp MQTT Data & Actions',
       contact: {
         name: 'Lê Xuân Trường',
         email: 'b22dcpt300@stu.ptit.edu.vn',
