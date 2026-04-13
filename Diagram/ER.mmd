@@ -1,0 +1,33 @@
+erDiagram
+    SENSORS {
+        varchar id PK "Mã cảm biến (TEMP, HUMID, LIGHT)"
+        varchar name "Tên Cảm biến"
+        varchar unit "Đơn vị đo"
+        datetime created_at "Ngày tạo"
+    }
+    SENSOR_DATA {
+        int id PK "Mã log tự tăng"
+        varchar sensor_id FK "Khóa ngoại tới SENSORS"
+        float value "Giá trị quét được"
+        datetime recorded_at "Tem thời gian ghi nhận"
+    }
+
+    DEVICES {
+        varchar id PK "Mã thiết bị (D1, D2, D3)"
+        varchar name "Tên Thiết bị"
+        varchar gpio_pin "Chân GPIO kết nối"
+        enum current_status "Trạng thái (ON/OFF)"
+        datetime created_at "Thời gian tạo"
+    }
+    ACTION_HISTORY {
+        int id PK "Mã log tự tăng"
+        varchar request_id "Mã định danh luồng lỗi"
+        varchar device_id FK "Khóa ngoại tới DEVICES"
+        enum action "Lệnh (ON/OFF)"
+        enum status "Trạng thái (PROCESSING/SUCCESS/FAILED)"
+        datetime created_at "Thời điểm gửi lệnh"
+        datetime updated_at "Thời điểm cập nhật trạng thái"
+    }
+    
+    SENSORS ||--o{ SENSOR_DATA : "1 cảm biến có nhiều log đo lường"
+    DEVICES ||--o{ ACTION_HISTORY : "1 thiết bị có nhiều log đóng/cắt"

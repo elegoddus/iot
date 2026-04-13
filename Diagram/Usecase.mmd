@@ -1,0 +1,14 @@
+flowchart LR
+    User([Người dùng])
+    u_board[Quản lý Dashboard]
+    
+    uc1((Đọc thông số Cảm biến\nthời gian thực))
+    uc2((Tra cứu và Lọc\nLịch sử Cảm biến))
+    uc3((Điều khiển Đóng/Cắt\nThiết bị phần cứng))
+    uc4((Xem Nhật ký \nLịch sử Điều khiển))
+    
+    User ===> u_board
+    u_board --> uc1
+    u_board --> uc2
+    u_board --> uc3
+    u_board --> uc4

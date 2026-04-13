@@ -6,7 +6,7 @@ const PALETTE = {
         { t: 24, c: "linear-gradient(90deg, #C1DE6A, #EAF3D1)", txt: "#2d3436" },
         { t: 20, c: "linear-gradient(90deg, #0BB884, #CFEFE5)", txt: "#2d3436" },
         { t: 15, c: "linear-gradient(90deg, #11CBD2, #D2F2F4)", txt: "#fff" },
-        { t: 0,  c: "linear-gradient(90deg, #81EBEB, #E1F8F8)", txt: "#2d3436" }
+        { t: 0, c: "linear-gradient(90deg, #81EBEB, #E1F8F8)", txt: "#2d3436" }
     ],
     humid: [
         { t: 90, c: "linear-gradient(90deg, #3A4A5A, #A6B0B9)", txt: "#fff" },
@@ -14,7 +14,7 @@ const PALETTE = {
         { t: 70, c: "linear-gradient(90deg, #1483DF, #B4DAF3)", txt: "#fff" },
         { t: 55, c: "linear-gradient(90deg, #0BCBCF, #CEF0F1)", txt: "#2d3436" },
         { t: 40, c: "linear-gradient(90deg, #95C9D9, #D2E7ED)", txt: "#2d3436" },
-        { t: 0,  c: "linear-gradient(90deg, #DFEDE9, #F3F8F6)", txt: "#2d3436" }
+        { t: 0, c: "linear-gradient(90deg, #DFEDE9, #F3F8F6)", txt: "#2d3436" }
     ],
     light: [
         { t: 900, c: "linear-gradient(90deg, #FBF8CC, #FEFDF2)", txt: "#2d3436" },
@@ -22,7 +22,7 @@ const PALETTE = {
         { t: 500, c: "linear-gradient(90deg, #E1E6E8, #F3F6F7)", txt: "#2d3436" },
         { t: 300, c: "linear-gradient(90deg, #B5BEC4, #E2E6E8)", txt: "#2d3436" },
         { t: 100, c: "linear-gradient(90deg, #6B7579, #C8CDCF)", txt: "#fff" },
-        { t: 0,   c: "linear-gradient(90deg, #323A3B, #B4B9BA)", txt: "#fff" }
+        { t: 0, c: "linear-gradient(90deg, #323A3B, #B4B9BA)", txt: "#fff" }
     ]
 };
 
@@ -43,7 +43,7 @@ function initChart() {
     mainChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: [], 
+            labels: [],
             datasets: [
                 {
                     label: 'Nhiệt độ (°C)', data: [],
@@ -107,7 +107,7 @@ function loadChartData() {
             mainChart.data.datasets[1].data = chartContext.humid || [];
             mainChart.data.datasets[2].data = chartContext.light || [];
             mainChart.update();
-        } catch(e) {
+        } catch (e) {
             console.error("Lỗi parse dữ liệu biểu đồ từ localStorage", e);
         }
     }
@@ -153,7 +153,7 @@ async function fetchSensorData() {
     try {
         const res = await fetch(`${API_URL}/sensors/current`);
         const data = await res.json();
-        
+
         let temp = 0, humid = 0, light = 0;
         let latestTime = "";
         data.forEach(item => {
@@ -173,7 +173,7 @@ async function fetchSensorData() {
             updateCard('humid', humid, 'humid');
             updateCard('light', light, 'light');
         }
-    } catch(e) {
+    } catch (e) {
         console.error("Lỗi lấy dữ liệu sensor", e);
     }
 }
@@ -188,11 +188,11 @@ async function fetchDeviceStatus() {
             if (device.id === 'D1') uiId = 'fan';
             if (device.id === 'D2') uiId = 'lamp1';
             if (device.id === 'D3') uiId = 'lamp2';
-            
+
             if (uiId) {
                 const wrap = document.getElementById(`wrap-${uiId}`);
                 if (!wrap) return;
-                
+
                 if (wrap.classList.contains('loading')) {
                     // Nếu đang xử lý, chỉ cập nhật nếu trạng thái server khớp kỳ vọng
                     if (device.current_status === wrap.dataset.expected) {
@@ -204,7 +204,7 @@ async function fetchDeviceStatus() {
                 }
 
                 const statusText = wrap.querySelector('.device-status');
-                
+
                 wrap.classList.remove('active', 'loading');
                 if (device.current_status === 'ON') {
                     wrap.classList.add('active'); // Thêm active chung
@@ -216,7 +216,7 @@ async function fetchDeviceStatus() {
                 }
             }
         });
-    } catch(e) {
+    } catch (e) {
         console.error("Lỗi lấy dữ liệu thiết bị", e);
     }
 }
@@ -224,16 +224,16 @@ async function fetchDeviceStatus() {
 async function toggleDevice(deviceId, uiId) {
     const wrap = document.getElementById(`wrap-${uiId}`);
     if (wrap.classList.contains('loading')) return; // Bỏ qua nếu đang xử lý
-    
+
     // Lưu lại trạng thái gốc phòng khi lỗi
     const isCurrentlyOn = wrap.classList.contains('active');
     const action = isCurrentlyOn ? 'OFF' : 'ON';
-    
+
     // Đánh dấu trạng thái kỳ vọng
     wrap.dataset.expected = action;
 
     const statusText = wrap.querySelector('.device-status');
-    
+
     // Ẩn màu lập tức -> chuyển sang xám
     wrap.classList.remove('active');
     wrap.classList.add('loading');
@@ -245,20 +245,20 @@ async function toggleDevice(deviceId, uiId) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ deviceId, action })
         });
-        
+
         // Timeout 10 giây SCADA (Rollback trạng thái an toàn)
         setTimeout(() => {
             if (wrap.classList.contains('loading') && wrap.dataset.expected === action) {
                 wrap.classList.remove('loading');
                 delete wrap.dataset.expected;
-                
+
                 if (isCurrentlyOn) {
                     wrap.classList.add('active'); // Hoàn tác trạng thái Bật
                 }
                 statusText.innerText = 'Lỗi mất kết nối';
             }
         }, 10000);
-    } catch(e) {
+    } catch (e) {
         console.error("Lỗi điều khiển thiết bị", e);
         wrap.classList.remove('loading');
         delete wrap.dataset.expected;
@@ -270,7 +270,7 @@ async function toggleDevice(deviceId, uiId) {
 document.addEventListener('DOMContentLoaded', () => {
     // Khởi tạo đồ thị
     initChart();
-    
+
     // Khởi tạo VanillaTilt cho Sensor Cards
     if (typeof VanillaTilt !== "undefined") {
         VanillaTilt.init(document.querySelectorAll(".sensor-card-wrapper"), {
@@ -280,7 +280,7 @@ document.addEventListener('DOMContentLoaded', () => {
             "max-glare": 0.2,
         });
     }
-    
+
     loadChartData(); // Khôi phục biểu đồ từ localStorage
     // Fetch dữ liệu mỗi 2 giây
     setInterval(() => {

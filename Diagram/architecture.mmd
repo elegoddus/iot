@@ -1,0 +1,42 @@
+%%{init: {"themeVariables": {"fontSize": "20px", "fontFamily": "sans-serif"}}}%%
+flowchart TD
+    %% Hardware Layer
+    subgraph Hardware[Tầng Thiết Bị - HW Layer]
+        ESP[ESP8266 WiFi Client]
+        DHT[Cảm biến DHT11]
+        LDR[Quang trở LDR]
+        RELAYS[Thiết bị D1 Fan, D2 Đèn trùm, D3 Đèn huỳnh quang]
+        
+        DHT -->|"dht.readTemperature()"| ESP
+        LDR -->|"analogRead(LIGHT_SENSOR)"| ESP
+        ESP -.->|"digitalWrite(DEVICE, HIGH/LOW)"| RELAYS
+    end
+
+    %% Network Layer
+    subgraph Network[Tầng Luân Chuyển Dữ Liệu - Mạng MQTT]
+        MQTT((Local Mosquitto MQTT Broker))
+    end
+    
+    %% Backend Layer
+    subgraph Backend[Tầng Dịch Vụ Máy Chủ - Backend Node.js]
+        API[Express REST API]
+        MQTTClient[MQTT Client Service]
+        DB[(Cơ sở dữ liệu MySQL)]
+        
+        MQTTClient <-->|"Pub/Sub 2 Topics"| API
+        MQTTClient -->|"pool.query"| DB
+        API <-->|"Truy vấn DB"| DB
+    end
+
+    %% Frontend Layer
+    subgraph Frontend[Tầng Ứng Dụng Khách - Web]
+        UI[Smart Home IoT Dashboard]
+        API_Call[Hàm fetchSensorData/fetchDeviceStatus]
+        
+        UI <--> API_Call
+    end
+
+    %% Liên kết giữa các Sub-graph
+    ESP <-->|"Publish/Subscribe"| MQTT
+    MQTT <-->|"Lắng nghe message"| MQTTClient
+    API_Call <-->|"HTTP Short-Polling"| API

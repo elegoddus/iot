@@ -182,8 +182,8 @@ router.get('/history', async (req, res) => {
                 query += ` AND (a.id = ? OR a.request_id LIKE ?)`;
                 params.push(parseInt(search), `%${search}%`);
             } else {
-                query += ` AND (d.name LIKE ? OR a.action LIKE ? OR DATE_FORMAT(a.created_at, '%d/%m/%Y %H:%i:%s') LIKE ? OR DATE_FORMAT(a.created_at, '%Y-%m-%d %H:%i:%s') LIKE ?)`;
-                params.push(`%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`);
+                query += ` AND (d.name LIKE ? OR a.action LIKE ? OR DATE_FORMAT(a.created_at, '%d/%m/%Y %H:%i:%s') LIKE ? OR DATE_FORMAT(a.created_at, '%H:%i:%s %d/%m/%Y') LIKE ? OR DATE_FORMAT(a.created_at, '%Y-%m-%d %H:%i:%s') LIKE ?)`;
+                params.push(`%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`);
             }
         }
 

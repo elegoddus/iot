@@ -1,0 +1,36 @@
+%%{init: { 
+  "themeVariables": { 
+    "fontSize": "35px", 
+    "actorFontSize": "35px",
+    "messageFontSize": "28px",
+    "noteFontSize": "28px"
+  },
+  "sequence": {
+    "actorMargin": 30,         
+    "messageMargin": 25,       
+    "width": 180,              
+    "height": 80,              
+    "mirrorActors": false,     
+    "bottomMarginAdj": 10
+  }
+}}%%
+sequenceDiagram
+    actor User as Người dùng
+    participant FE as Giao diện Web
+    participant BE as Backend API
+    participant DB as CSDL MySQL
+    
+    autonumber
+    Note over User, DB: Lọc Nhật ký & Đẩy Nhánh Short-Polling Realtime
+    User->>FE: Bấm Bộ chọn lọc (Thiết bị, Hành động, Cờ Trạng Thái)
+    FE->>FE: Khóa UI, Gom các Params (Gồm thiết bị, loại, Limit)
+    
+    loop Fetch ngầm định kỳ 2000ms liên tục (Polling)
+        FE->>BE: GET /api/actions/history?device=D1&status=SUCCESS...
+        BE->>DB: Truy vấn Lọc Chéo (JOIN) tạo khối điều kiện WHERE
+        DB-->>BE: Vắt Mảng Record (ORDER BY DESC) + Tổng Trang
+        BE-->>FE: HTTP 200 nạp túi JSON `{data: [...], totalPages}`
+        FE->>FE: So sánh Cờ dữ liệu loại bỏ nháy/giật gián đoạn DOM
+        FE->>FE: RenderTable() dẹp thân Bảng, đắp dải <tr> thẻ đè vào
+        FE-->>User: Khung Lịch Sử nảy số liên tiếp mà không F5 rác mạng
+    end

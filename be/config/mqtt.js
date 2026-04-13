@@ -34,27 +34,26 @@ client.on('message', async (topic, message) => {
             if (data.L !== undefined) {
                 await pool.query('INSERT INTO sensor_data (sensor_id, value) VALUES (?, ?)', ['LIGHT_01', data.L]);
             }
-        } 
+        }
         else if (topic === 'truongguitin/callback') {
             // {"D1": "ON", "D2": "OFF", "D3": "OFF", "result": "SUCCESS"}
             let data;
             try {
                 data = JSON.parse(payload);
-            } catch(e) {
+            } catch (e) {
                 console.warn('MQTT callback payload is not valid JSON:', payload);
                 return;
             }
-            
+
             if (data) {
                 // Update device statuses
                 if (data.D1) await pool.query('UPDATE devices SET current_status = ? WHERE id = ?', [data.D1, 'D1']);
                 if (data.D2) await pool.query('UPDATE devices SET current_status = ? WHERE id = ?', [data.D2, 'D2']);
                 if (data.D3) await pool.query('UPDATE devices SET current_status = ? WHERE id = ?', [data.D3, 'D3']);
 
-                // Any PROCESSING actions can be marked SUCCESS when ESP reports a status change
-                // (Since ESP code doesn't send reqId back, this is a simple approximation)
+
                 if (data.result === 'SUCCESS' || data.result === 'BLINK_MODE_ON' || data.result === 'UNKNOWN_COMMAND' || data.result === 'ALL_OFF' || data.result === 'ALL_ON') {
-                     await pool.query('UPDATE action_history SET status = ? WHERE status = ?', ['SUCCESS', 'PROCESSING']);
+                    await pool.query('UPDATE action_history SET status = ? WHERE status = ?', ['SUCCESS', 'PROCESSING']);
                 }
             }
         }

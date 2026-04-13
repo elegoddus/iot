@@ -1,0 +1,33 @@
+%%{init: { 
+  "themeVariables": { 
+    "fontSize": "35px", 
+    "actorFontSize": "35px",
+    "messageFontSize": "28px",
+    "noteFontSize": "28px"
+  },
+  "sequence": {
+    "actorMargin": 30,         
+    "messageMargin": 25,       
+    "width": 180,              
+    "height": 80,              
+    "mirrorActors": false,     
+    "bottomMarginAdj": 10
+  }
+}}%%
+sequenceDiagram
+    actor User as Người dùng
+    participant FE as Giao diện Web
+    participant BE as Backend API
+    participant DB as CSDL MySQL
+    
+    autonumber
+    Note over User, DB: Tra cứu Nhận diện Số liệu (Smart Search SQL)
+    User->>FE: Nhập con số '30.1' và Click nút Tìm kiếm
+    FE->>FE: Lấy Value, chặn Reset trang Web
+    FE->>BE: GET /api/sensors/history?search=30.1&limit=10
+    BE->>BE: Bật Lọc Số (isNumeric) chặn rác Date
+    BE->>DB: SELECT dữ liệu ép kiểu CAST(value AS CHAR)
+    DB-->>BE: Mảng Record (Sắp xếp DESC) & Số trang
+    BE-->>FE: HTTP 200 Trả về Object `{data, totalPages}`
+    FE->>FE: Cập nhật hàm renderTable(), gán <tr> đè DOM
+    FE-->>User: Hiển thị Bảng Lịch sử Tìm kiếm chuẩn xác

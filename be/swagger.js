@@ -9,7 +9,7 @@ const options = {
       description: 'Tài liệu API cho hệ thống Smart Home IoT tích hợp MQTT Data & Actions',
       contact: {
         name: 'Lê Xuân Trường',
-        email: 'b22dcpt300@stu.ptit.edu.vn',
+        email: '07092004truong@gmail.com',
       },
     },
     servers: [
@@ -20,7 +20,7 @@ const options = {
     ],
   },
   // Đường dẫn đến các file chứa custom jsdoc API 
-  apis: ['./routes/*.js'], 
+  apis: ['./routes/*.js'],
 };
 
 const swaggerSpec = swaggerJsdoc(options);

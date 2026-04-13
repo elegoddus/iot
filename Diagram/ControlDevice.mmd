@@ -1,0 +1,52 @@
+%%{init: { 
+  "themeVariables": { 
+    "fontSize": "35px", 
+    "actorFontSize": "35px",
+    "messageFontSize": "28px",
+    "noteFontSize": "28px"
+  },
+  "sequence": {
+    "actorMargin": 30,         %% GIẢM CỰC THẤP khoảng cách giữa các cột (mặc định ~50-100)
+    "messageMargin": 25,       %% GIẢM khoảng cách dọc giữa các mũi tên
+    "width": 180,              %% ÉP độ rộng của ô tiêu đề (Actor box) nhỏ lại
+    "height": 80,              %% ĐỘ CAO của ô tiêu đề
+    "mirrorActors": false,     %% Tắt việc lặp lại các actor ở dưới cùng để tiết kiệm diện tích dọc
+    "bottomMarginAdj": 10
+  }
+}}%%
+sequenceDiagram
+    actor User as Người dùng
+    participant FE as Giao diện Web
+    participant BE as Backend API
+    participant HW as Thiết Bị (ESP8266)
+    participant DB as MySQL DB
+    participant MQTT as Khối MQTT Broker
+    autonumber
+    Note over User, FE: Giao dịch Điều khiển (Request)
+    User->>FE: Bấm chọn Đóng/Ngắt Thiết bị
+    FE->>FE: Bật hiệu ứng Spinner (Loading) cho nút
+    FE->>BE: POST /api/actions/control {"action":"TURN_ON"}
+    alt Lỗi Server mất kết nối MQTT
+        BE-->>FE: Trả về Lỗi 500 MQTT Disconnected
+    else Broker bình thường
+        BE->>DB: INSERT lịch sử trạng thái 'PROCESSING'
+        DB-->>BE: Xác nhận khởi tạo giao dịch
+        BE->>MQTT: client.publish("truongguitin/control", "D1_ON")
+        BE-->>FE: Phản hồi HTTP 200 (Lệnh đã gửi đi chờ kết quả)
+        MQTT-->>HW: Chuyển tiếp lệnh điều khiển
+    end
+    Note over HW, FE: Vòng đời Xử lý (Response & Timeout Exception)
+    alt Thành công (Thiết bị hoạt động tốt)
+        HW->>HW: Đóng mở mạch lệnh digitalWrite(DEVICE1, HIGH)
+        HW->>MQTT: client.publish("truongguitin/callback", "SUCCESS")
+        MQTT-->>BE: Lắng nghe client.on() Topic phản hồi
+        BE->>DB: UPDATE dòng lịch sử thành trạng thái 'SUCCESS'
+        FE->>FE: Quét thấy HTTP 200, gỡ bỏ Spinner, chuyển màu nút
+        FE-->>User: Nút bấm hiển thị <br/>Trạng thái ON/OFF rõ ràng
+    else Ngoại lệ Thất bại (Phần cứng mất điện / Delay mạng)
+        Note over BE, DB: Khởi động bộ Timeout 10s (Chuẩn SCADA)
+        BE->>DB: UPDATE dòng lịch sử chuyển từ 'PROCESSING' thành 'FAILED'
+        Note over FE, FE: Giao diện độc lập đếm ngược setTimeout 10s
+        FE->>FE: Gỡ bỏ Spinner, hiển thị "Lỗi điều khiển"
+        FE-->>User: Tự động Rollback trạng thái về <br/> trạng thái cũ chống treo
+    end

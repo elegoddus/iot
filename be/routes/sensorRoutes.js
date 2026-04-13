@@ -98,8 +98,8 @@ router.get('/history', async (req, res) => {
                 query += ` AND (CAST(sd.value AS CHAR) LIKE ?)`;
                 params.push(`%${search}%`);
             } else {
-                query += ` AND (s.name LIKE ? OR DATE_FORMAT(sd.recorded_at, '%d/%m/%Y %H:%i:%s') LIKE ? OR DATE_FORMAT(sd.recorded_at, '%Y-%m-%d %H:%i:%s') LIKE ?)`;
-                params.push(`%${search}%`, `%${search}%`, `%${search}%`);
+                query += ` AND (s.name LIKE ? OR DATE_FORMAT(sd.recorded_at, '%d/%m/%Y %H:%i:%s') LIKE ? OR DATE_FORMAT(sd.recorded_at, '%H:%i:%s %d/%m/%Y') LIKE ? OR DATE_FORMAT(sd.recorded_at, '%Y-%m-%d %H:%i:%s') LIKE ?)`;
+                params.push(`%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`);
             }
         }
 

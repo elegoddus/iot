@@ -1,0 +1,50 @@
+%%{init: { 
+  "themeVariables": { 
+    "fontSize": "50px", 
+    "actorFontSize": "25px", 
+    "noteFontSize": "22px", 
+    "messageFontSize": "20px",
+    "actorLineColor": "#333",
+    "actorMargin": 80
+  },
+  "sequence": {
+    "diagramMarginX": 50,
+    "diagramMarginY": 30,
+    "actorMargin": 100,
+    "width": 200,
+    "height": 80,
+    "messageMargin": 40
+  }
+}}%%
+sequenceDiagram
+    autonumber
+    actor User as Người dùng
+    participant HW as Vi điều khiển (ESP8266)
+    participant MQTT as Khối MQTT Broker
+    participant BE as Backend Node.js
+    participant DB as CSDL MySQL
+    participant FE as Giao diện Web (FE)
+    
+    Note over HW: Quá trình khởi tạo & Sinh dữ liệu (Chu kỳ 2000ms)
+    HW->>HW: dht.begin() & analogRead(LIGHT_SENSOR)
+    HW->>HW: WiFi.begin() kết nối Access Point
+    HW->>MQTT: client.connect() tới Mosquitto
+    
+    loop Đẩy dữ liệu liên tục
+        HW->>HW: Đọc t, h, light đóng gói<br/>"{"T":32.5, "H":60}"
+        HW->>MQTT: client.publish("sensors", data)
+        MQTT-->>BE: client.on('message') nhận Payload
+        BE->>DB: pool.query("INSERT...")
+        DB-->>BE: CSDL xác nhận thành công
+    end
+
+    Note over User, FE: Quá trình Web hiển thị Thời gian thực
+    User->>FE: Truy cập Dashboard
+    loop Short-Polling mỗi 2000ms
+        FE->>BE: GET /api/sensors/current
+        BE->>DB: SELECT dữ liệu mới nhất
+        DB-->>BE: Khối Dữ liệu mới nhất
+        BE-->>FE: Trả về JSON (200 OK)
+        FE->>FE: Cập nhật thẻ HTML & Chart
+        FE-->>User: Cập nhật giao diện tự động
+    end

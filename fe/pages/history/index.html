@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <title>Smart Home IoT - Lịch Sử</title>
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
+
 <body>
     <nav class="top-navbar">
         <div class="nav-left">
@@ -41,10 +43,10 @@
         <div class="tech-panel-wrapper">
             <div class="top-bar-area">
                 <div class="panel-title-container">NHẬT KÝ ĐIỀU KHIỂN</div>
-                
+
                 <div class="white-filler">
                     <div class="rows-selector">
-                        <label>Hiển thị:</label>
+                        <label></label>
                         <select id="rows-history" class="custom-select">
                             <option value="10" selected>10 hàng</option>
                             <option value="20">20 hàng</option>
@@ -72,8 +74,9 @@
                             <option value="PROCESSING">Đang tải</option>
                         </select>
 
-                        <input type="text" id="search-history" class="custom-input" placeholder="Tìm ID hoặc Thời gian...">
-                        
+                        <input type="text" id="search-history" class="custom-input"
+                            placeholder="Tìm ID hoặc Thời gian...">
+
                         <button class="btn-search" id="btn-search">
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </button>
@@ -95,7 +98,7 @@
                     <tbody id="history-table-body"></tbody>
                 </table>
             </div>
-            
+
             <div class="pagination">
                 <span class="page-item" id="btn-prev">Prev</span>
                 <span class="page-info" id="page-info">Trang 1</span>
@@ -105,4 +108,5 @@
     </div>
     <script src="script.js?v=2"></script>
 </body>
+
 </html>
