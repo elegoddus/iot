@@ -29,26 +29,26 @@ const mqttClient = require('../config/mqtt');
  */
 router.post('/control', async (req, res) => {
     try {
-        const { deviceId, action } = req.body; 
-        
+        const { deviceId, action } = req.body;
+
         const validDevices = ['D1', 'D2', 'D3', 'ALL'];
         const validActions = ['ON', 'OFF', 'BLINK'];
-        
+
         if (!validDevices.includes(deviceId) || !validActions.includes(action)) {
             return res.status(400).json({ error: 'Invalid deviceId or action' });
         }
 
         const reqId = uuidv4();
-        
+
         let mqttCommand = '';
         if (deviceId === 'ALL') {
-             mqttCommand = action === 'BLINK' ? 'BLINK_ALL' : `ALL_${action}`;
+            mqttCommand = action === 'BLINK' ? 'BLINK_ALL' : `ALL_${action}`;
         } else {
-             mqttCommand = `${deviceId}_${action}`;
+            mqttCommand = `${deviceId}_${action}`;
         }
 
         let targetDevice = deviceId === 'ALL' ? null : deviceId;
-        
+
         let actionEnum = `TURN_${action}`;
         if (action === 'BLINK') actionEnum = 'TURN_ON'; // Fallback for enum compatibility
 
@@ -58,20 +58,18 @@ router.post('/control', async (req, res) => {
                 [reqId, targetDevice, actionEnum, 'PROCESSING']
             );
         } else {
-             // For ALL, maybe we can insert 3 rows or skip depending on design. Let's insert for each for better history tracking
-             if (action !== 'BLINK') {
-                 await pool.query(
-                     `INSERT INTO action_history (request_id, device_id, action, status) VALUES (?, ?, ?, ?), (?, ?, ?, ?), (?, ?, ?, ?)`,
-                     [
-                        reqId+'-D1', 'D1', actionEnum, 'PROCESSING',
-                        reqId+'-D2', 'D2', actionEnum, 'PROCESSING',
-                        reqId+'-D3', 'D3', actionEnum, 'PROCESSING'
-                     ]
-                 );
-             }
+            if (action !== 'BLINK') {
+                await pool.query(
+                    `INSERT INTO action_history (request_id, device_id, action, status) VALUES (?, ?, ?, ?), (?, ?, ?, ?), (?, ?, ?, ?)`,
+                    [
+                        reqId + '-D1', 'D1', actionEnum, 'PROCESSING',
+                        reqId + '-D2', 'D2', actionEnum, 'PROCESSING',
+                        reqId + '-D3', 'D3', actionEnum, 'PROCESSING'
+                    ]
+                );
+            }
         }
 
-        // Check MQTT connection immediately before buffering
         if (!mqttClient.connected) {
             await pool.query(`UPDATE action_history SET status = 'FAILED' WHERE request_id LIKE ?`, [`${reqId}%`]);
             return res.status(500).json({ error: 'MQTT Broker disconnected' });
@@ -165,7 +163,7 @@ router.get('/history', async (req, res) => {
             query += ` AND a.device_id = ?`;
             params.push(deviceId);
         }
-        
+
         if (actionFilter !== 'all') {
             query += ` AND a.action = ?`;
             params.push(actionFilter);
@@ -182,8 +180,14 @@ router.get('/history', async (req, res) => {
                 query += ` AND (a.id = ? OR a.request_id LIKE ?)`;
                 params.push(parseInt(search), `%${search}%`);
             } else {
-                query += ` AND (d.name LIKE ? OR a.action LIKE ? OR DATE_FORMAT(a.created_at, '%d/%m/%Y %H:%i:%s') LIKE ? OR DATE_FORMAT(a.created_at, '%H:%i:%s %d/%m/%Y') LIKE ? OR DATE_FORMAT(a.created_at, '%Y-%m-%d %H:%i:%s') LIKE ?)`;
-                params.push(`%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`);
+                query += ` AND (d.name LIKE ? OR a.action LIKE ? 
+                    OR DATE_FORMAT(a.created_at, '%d/%m/%Y %H:%i:%s') LIKE ? 
+                    OR DATE_FORMAT(a.created_at, '%H:%i:%s %d/%m/%Y') LIKE ? 
+                    OR DATE_FORMAT(a.created_at, '%e/%c/%Y %H:%i:%s') LIKE ? 
+                    OR DATE_FORMAT(a.created_at, '%H:%i:%s %e/%c/%Y') LIKE ?
+                    OR DATE_FORMAT(a.created_at, '%Y-%m-%d %H:%i:%s') LIKE ?)`;
+                const fuzzySearch = '%' + search.trim().replace(/\s+/g, '%') + '%';
+                params.push(fuzzySearch, fuzzySearch, fuzzySearch, fuzzySearch, fuzzySearch, fuzzySearch, fuzzySearch);
             }
         }
 
@@ -226,7 +230,7 @@ router.get('/history', async (req, res) => {
             }
         }
         const [countResult] = await pool.query(countQuery, countParams);
-        
+
         res.json({
             data: rows,
             total: countResult[0].total,
