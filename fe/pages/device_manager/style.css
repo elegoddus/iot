@@ -1,0 +1,153 @@
+/* Trở lại phong cách vuông vức của riêng Device Manager */
+.container {
+    padding: 24px;
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.tech-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 24px;
+}
+
+.tech-card h3 {
+    color: var(--accent-color);
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Controls Grid: 5 nút trên cùng một hàng */
+.controls-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+}
+@media (max-width: 1200px) {
+    .controls-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+@media (max-width: 768px) {
+    .controls-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.btn-wrapper {
+    position: relative;
+    padding: 3px; /* Viền gradient mỏng */
+    clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
+    background: linear-gradient(90deg, #070920, #200479, #972004);
+}
+
+.control-btn {
+    background: white;
+    clip-path: polygon(13px 0, 100% 0, 100% calc(100% - 13px), calc(100% - 13px) 100%, 0 100%, 0 13px);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+.control-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(11, 203, 207, 0.1);
+}
+
+/* Custom COLORS cho từng nút khi Active (Màu nền pastel, box-shadow màu chính) */
+.btn-wrapper.active.fan .control-btn { background: #d0f7ef; box-shadow: inset 0 0 20px rgba(11, 220, 181, 0.2); }
+.btn-wrapper.active.lamp1 .control-btn { background: #fff5cc; box-shadow: inset 0 0 20px rgba(243, 194, 0, 0.2); }
+.btn-wrapper.active.lamp2 .control-btn { background: #f2e6f4; box-shadow: inset 0 0 20px rgba(165, 97, 184, 0.2); }
+.btn-wrapper.active.ac .control-btn { background: #d6eaf8; box-shadow: inset 0 0 20px rgba(52, 152, 219, 0.2); }
+.btn-wrapper.active.fridge .control-btn { background: #f5f6fa; box-shadow: inset 0 0 20px rgba(189, 195, 199, 0.2); }
+
+
+/* Icon Area */
+.btn-icon-area i {
+    color: #64748b;
+    transition: color 0.3s ease;
+}
+
+/* Màu icon tổng lớn */
+.btn-wrapper.active.fan .btn-icon-area i { color: #0bdcb5; text-shadow: 0 0 10px #0bdcb5; }
+.btn-wrapper.active.lamp1 .btn-icon-area i { color: #f3c200; text-shadow: 0 0 10px #f3c200; }
+.btn-wrapper.active.lamp2 .btn-icon-area i { color: #a561b8; text-shadow: 0 0 10px #a561b8; }
+.btn-wrapper.active.ac .btn-icon-area i { color: #3498db; text-shadow: 0 0 10px #3498db; }
+.btn-wrapper.active.fridge .btn-icon-area i { color: #bdc3c7; text-shadow: 0 0 10px #bdc3c7; }
+
+
+.btn-info {
+    text-align: center;
+}
+
+.device-name {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #2d3436; /* Màu chữ tối trên nền sáng */
+    margin-bottom: 5px;
+}
+
+.device-status {
+    font-family: var(--font-mono);
+    color: #94a3b8;
+    font-size: 0.85rem;
+}
+
+.btn-wrapper.active .device-status {
+    color: #4ade80;
+}
+
+/* Loading state */
+.btn-wrapper.loading .control-btn {
+    opacity: 0.8;
+    pointer-events: none;
+    background: #e2eaf0; /* Nền xám nhẹ lúc đang tải */
+}
+
+.btn-wrapper.loading .btn-action i {
+    animation: spin 1s linear infinite;
+    color: #f1c40f;
+}
+
+.btn-wrapper.loading .device-status {
+    color: #f1c40f;
+}
+
+@keyframes spin {
+    100% { transform: rotate(360deg); }
+}
+
+/* Nút Power góc dưới (Action Icon) */
+.btn-action i {
+    font-size: 1.5em;
+    color: #e74c3c; /* OFF state */
+    transition: color 0.3s;
+}
+
+.btn-wrapper.active .btn-action i {
+    color: #2ecc71; /* ON state */
+}
+
+/* Chart */
+.chart-wrapper {
+    position: relative;
+    background: rgba(255, 255, 255, 0.05); /* Sáng hơn một chút */
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid rgba(255,255,255,0.1);
+}

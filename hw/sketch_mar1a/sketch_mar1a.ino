@@ -13,6 +13,8 @@ const char* mqtt_pwd = "truong0709";
 #define DEVICE1 2  // D4
 #define DEVICE2 14 // D5
 #define DEVICE3 15 // D8
+#define DEVICE4 12 // D6
+#define DEVICE5 13 // D7
 
 #define DHTPIN 4   // D2
 #define DHTTYPE DHT11
@@ -32,8 +34,10 @@ void sendFullStatus(String resultText) {
   String st1 = digitalRead(DEVICE1) ? "ON" : "OFF";
   String st2 = digitalRead(DEVICE2) ? "ON" : "OFF";
   String st3 = digitalRead(DEVICE3) ? "ON" : "OFF";
+  String st4 = digitalRead(DEVICE4) ? "ON" : "OFF";
+  String st5 = digitalRead(DEVICE5) ? "ON" : "OFF";
 
-  String payload = "{\"D1\": \"" + st1 + "\", \"D2\": \"" + st2 + "\", \"D3\": \"" + st3 + "\", \"result\": \"" + resultText + "\"}";
+  String payload = "{\"D1\": \"" + st1 + "\", \"D2\": \"" + st2 + "\", \"D3\": \"" + st3 + "\", \"D4\": \"" + st4 + "\", \"D5\": \"" + st5 + "\", \"result\": \"" + resultText + "\"}";
   
   client.publish("truongguitin/callback", payload.c_str());
   Serial.println("Da gui callback: " + payload);
@@ -54,11 +58,15 @@ void callback(char* topic, byte* payload, unsigned long length) {
     digitalWrite(DEVICE1, HIGH);
     digitalWrite(DEVICE2, HIGH);
     digitalWrite(DEVICE3, HIGH);
+    digitalWrite(DEVICE4, HIGH);
+    digitalWrite(DEVICE5, HIGH);
     sendFullStatus("SUCCESS");
   } else if (message == "ALL_OFF") {
     digitalWrite(DEVICE1, LOW);
     digitalWrite(DEVICE2, LOW);
     digitalWrite(DEVICE3, LOW);
+    digitalWrite(DEVICE4, LOW);
+    digitalWrite(DEVICE5, LOW);
     sendFullStatus("SUCCESS");
   } else if (message == "BLINK_ALL") {
     isBlinking = true;
@@ -83,6 +91,18 @@ void callback(char* topic, byte* payload, unsigned long length) {
   } else if (message == "D3_OFF") {
     digitalWrite(DEVICE3, LOW);
     sendFullStatus("SUCCESS");
+  } else if (message == "D4_ON") {
+    digitalWrite(DEVICE4, HIGH);
+    sendFullStatus("SUCCESS");
+  } else if (message == "D4_OFF") {
+    digitalWrite(DEVICE4, LOW);
+    sendFullStatus("SUCCESS");
+  } else if (message == "D5_ON") {
+    digitalWrite(DEVICE5, HIGH);
+    sendFullStatus("SUCCESS");
+  } else if (message == "D5_OFF") {
+    digitalWrite(DEVICE5, LOW);
+    sendFullStatus("SUCCESS");
   } else {
     sendFullStatus("UNKNOWN_COMMAND");
   }
@@ -93,6 +113,8 @@ void setup() {
   pinMode(DEVICE1, OUTPUT);
   pinMode(DEVICE2, OUTPUT);
   pinMode(DEVICE3, OUTPUT);
+  pinMode(DEVICE4, OUTPUT);
+  pinMode(DEVICE5, OUTPUT);
   dht.begin();
   
   WiFi.begin(ssid, password);

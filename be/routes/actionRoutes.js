@@ -31,7 +31,7 @@ router.post('/control', async (req, res) => {
     try {
         const { deviceId, action } = req.body;
 
-        const validDevices = ['D1', 'D2', 'D3', 'ALL'];
+        const validDevices = ['D1', 'D2', 'D3', 'D4', 'D5', 'ALL'];
         const validActions = ['ON', 'OFF', 'BLINK'];
 
         if (!validDevices.includes(deviceId) || !validActions.includes(action)) {
@@ -60,11 +60,13 @@ router.post('/control', async (req, res) => {
         } else {
             if (action !== 'BLINK') {
                 await pool.query(
-                    `INSERT INTO action_history (request_id, device_id, action, status) VALUES (?, ?, ?, ?), (?, ?, ?, ?), (?, ?, ?, ?)`,
+                    `INSERT INTO action_history (request_id, device_id, action, status) VALUES (?, ?, ?, ?), (?, ?, ?, ?), (?, ?, ?, ?), (?, ?, ?, ?), (?, ?, ?, ?)`,
                     [
                         reqId + '-D1', 'D1', actionEnum, 'PROCESSING',
                         reqId + '-D2', 'D2', actionEnum, 'PROCESSING',
-                        reqId + '-D3', 'D3', actionEnum, 'PROCESSING'
+                        reqId + '-D3', 'D3', actionEnum, 'PROCESSING',
+                        reqId + '-D4', 'D4', actionEnum, 'PROCESSING',
+                        reqId + '-D5', 'D5', actionEnum, 'PROCESSING'
                     ]
                 );
             }
@@ -240,6 +242,52 @@ router.get('/history', async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Server error' });
+    }
+});
+
+/**
+ * @swagger
+ * /api/actions/stats:
+ *   get:
+ *     summary: Thống kê số lần bật tắt thiết bị
+ *     description: Lấy số lần thao tác của các thiết bị trong ngày
+ *     responses:
+ *       200:
+ *         description: Trả về đối tượng chứa count của thẻ D1->D5
+ */
+router.get('/stats', async (req, res) => {
+    try {
+        const dateFilter = req.query.date;
+        let query = `
+            SELECT device_id, COUNT(*) as action_count 
+            FROM action_history 
+            WHERE DATE(created_at) = CURDATE()
+            GROUP BY device_id
+        `;
+        let params = [];
+        
+        if (dateFilter) {
+            query = `
+                SELECT device_id, COUNT(*) as action_count 
+                FROM action_history 
+                WHERE DATE(created_at) = ?
+                GROUP BY device_id
+            `;
+            params = [dateFilter];
+        }
+
+        const [rows] = await pool.query(query, params);
+        
+        let stats = { D1: 0, D2: 0, D3: 0, D4: 0, D5: 0 };
+        rows.forEach(row => {
+            if (stats[row.device_id] !== undefined) {
+                stats[row.device_id] = row.action_count;
+            }
+        });
+        res.json(stats);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Server error retrieving stats' });
     }
 });
 

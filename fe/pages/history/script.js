@@ -23,6 +23,8 @@ async function fetchActionHistory(isPolling = false) {
         if (filterVal === 'fan') deviceId = 'D1';
         if (filterVal === 'lamp') deviceId = 'D2';
         if (filterVal === 'ac') deviceId = 'D3';
+        if (filterVal === 'aircond') deviceId = 'D4';
+        if (filterVal === 'fridge') deviceId = 'D5';
 
         const params = new URLSearchParams({
             page: currentPage,
@@ -65,6 +67,8 @@ function getDeviceIcon(deviceId) {
     if (deviceId === 'D1') return '<img src="../../images/Fan.svg" style="width: 30px; vertical-align: middle; margin-right: 15px;">';
     if (deviceId === 'D2') return '<img src="../../images/Light1.svg" style="width: 30px; vertical-align: middle; margin-right: 15px;">';
     if (deviceId === 'D3') return '<img src="../../images/Light2.svg" style="width: 30px; vertical-align: middle; margin-right: 15px;">';
+    if (deviceId === 'D4') return '<i class="fa-solid fa-snowflake" style="color: #3498db; width: 30px; font-size: 1.5em; text-align: center; vertical-align: middle; margin-right: 15px;"></i>';
+    if (deviceId === 'D5') return '<i class="fa-solid fa-cube" style="color: #bdc3c7; width: 30px; font-size: 1.5em; text-align: center; vertical-align: middle; margin-right: 15px;"></i>';
     return '<i class="fa-solid fa-microchip" style="color: #b3b3b3; font-size: 1.5em; vertical-align: middle; margin-right: 15px;"></i>';
 }
 

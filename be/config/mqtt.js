@@ -50,6 +50,8 @@ client.on('message', async (topic, message) => {
                 if (data.D1) await pool.query('UPDATE devices SET current_status = ? WHERE id = ?', [data.D1, 'D1']);
                 if (data.D2) await pool.query('UPDATE devices SET current_status = ? WHERE id = ?', [data.D2, 'D2']);
                 if (data.D3) await pool.query('UPDATE devices SET current_status = ? WHERE id = ?', [data.D3, 'D3']);
+                if (data.D4) await pool.query('UPDATE devices SET current_status = ? WHERE id = ?', [data.D4, 'D4']);
+                if (data.D5) await pool.query('UPDATE devices SET current_status = ? WHERE id = ?', [data.D5, 'D5']);
 
 
                 if (data.result === 'SUCCESS' || data.result === 'BLINK_MODE_ON' || data.result === 'UNKNOWN_COMMAND' || data.result === 'ALL_OFF' || data.result === 'ALL_ON') {

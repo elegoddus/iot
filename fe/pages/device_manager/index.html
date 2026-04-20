@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Home IoT - Thiết bị</title>
+    <link rel="stylesheet" href="../../global.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <nav class="top-navbar">
+        <div class="nav-left">
+            <a href="../../index.html" class="logo"><i class="fa-solid fa-layer-group"></i> SMART HOME IOT</a>
+            <ul class="nav-links">
+                <li>
+                    <div class="nav-item-wrap">
+                        <a href="../../index.html" class="nav-item">DASHBOARD</a>
+                    </div>
+                </li>
+                <li>
+                    <div class="nav-item-wrap">
+                        <a href="#" class="nav-item active">DEVICE MANAGER</a>
+                    </div>
+                </li>
+                <li>
+                    <div class="nav-item-wrap">
+                        <a href="../datasensor/index.html" class="nav-item">DATA SENSOR</a>
+                    </div>
+                </li>
+                <li>
+                    <div class="nav-item-wrap">
+                        <a href="../history/index.html" class="nav-item">ACTION HISTORY</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="nav-right">
+            <a href="../profile/index.html" class="user-profile-link">
+                <div class="name">Lê Xuân Trường</div>
+                <div class="avatar">T</div>
+            </a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Panel Điều khiển Tất cả 5 thiết bị -->
+        <div class="devices-panel tech-card">
+            <h3><i class="fa-solid fa-sliders"></i> HUB ĐIỀU KHIỂN TỔNG HỢP</h3>
+            <div class="controls-grid">
+                <!-- D1 -->
+                <div class="btn-wrapper fan" id="wrap-fan">
+                    <div class="control-btn" onclick="toggleDevice('D1', 'fan')">
+                        <div class="btn-icon-area">
+                            <i class="fa-solid fa-fan fa-2x"></i>
+                        </div>
+                        <div class="btn-info">
+                            <div class="device-name">QUẠT GIÓ</div>
+                            <div class="device-status">Đang tải...</div>
+                        </div>
+                        <div class="btn-action">
+                            <i class="fa-solid fa-power-off status-icon"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- D2 -->
+                <div class="btn-wrapper lamp1" id="wrap-lamp1">
+                    <div class="control-btn" onclick="toggleDevice('D2', 'lamp1')">
+                        <div class="btn-icon-area">
+                            <i class="fa-regular fa-lightbulb fa-2x"></i>
+                        </div>
+                        <div class="btn-info">
+                            <div class="device-name">ĐÈN CHÙM</div>
+                            <div class="device-status">Đang tải...</div>
+                        </div>
+                        <div class="btn-action">
+                            <i class="fa-solid fa-power-off status-icon"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- D3 -->
+                <div class="btn-wrapper lamp2" id="wrap-lamp2">
+                    <div class="control-btn" onclick="toggleDevice('D3', 'lamp2')">
+                        <div class="btn-icon-area">
+                            <i class="fa-solid fa-lightbulb fa-2x"></i>
+                        </div>
+                        <div class="btn-info">
+                            <div class="device-name">ĐÈN HUỲNH QUANG</div>
+                            <div class="device-status">Đang tải...</div>
+                        </div>
+                        <div class="btn-action">
+                            <i class="fa-solid fa-power-off status-icon"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- D4 -->
+                <div class="btn-wrapper ac" id="wrap-ac">
+                    <div class="control-btn" onclick="toggleDevice('D4', 'ac')">
+                        <div class="btn-icon-area custom-fas">
+                            <i class="fa-solid fa-snowflake fa-2x"></i>
+                        </div>
+                        <div class="btn-info">
+                            <div class="device-name">ĐIỀU HÒA</div>
+                            <div class="device-status">Đang tải...</div>
+                        </div>
+                        <div class="btn-action">
+                            <i class="fa-solid fa-power-off status-icon"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- D5 -->
+                <div class="btn-wrapper fridge" id="wrap-fridge">
+                    <div class="control-btn" onclick="toggleDevice('D5', 'fridge')">
+                        <div class="btn-icon-area custom-fas">
+                            <i class="fa-solid fa-cube fa-2x"></i>
+                        </div>
+                        <div class="btn-info">
+                            <div class="device-name">TỦ LẠNH</div>
+                            <div class="device-status">Đang tải...</div>
+                        </div>
+                        <div class="btn-action">
+                            <i class="fa-solid fa-power-off status-icon"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel Biểu đồ Thống kê ngày -->
+        <div class="stats-panel tech-card">
+            <div class="chart-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 20px;">
+                <h3 class="chart-title" style="margin-bottom: 0; border-bottom: none; padding-bottom: 0;"><i class="fa-solid fa-chart-bar"></i> BIỂU ĐỒ TẦN SUẤT HOẠT ĐỘNG</h3>
+                <input type="date" id="statsDate" style="background: rgba(11, 25, 44, 0.6); color: white; border: 1px solid var(--accent-color); padding: 5px 10px; border-radius: 5px; font-family: var(--font-mono); outline: none;">
+            </div>
+            <div class="chart-wrapper" style="height: 400px; width: 100%;">
+                <canvas id="deviceStatsChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
