@@ -139,8 +139,17 @@
                 style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 20px;">
                 <h3 class="chart-title" style="margin-bottom: 0; border-bottom: none; padding-bottom: 0;"><i
                         class="fa-solid fa-chart-bar"></i> BIỂU ĐỒ TẦN SUẤT HOẠT ĐỘNG</h3>
-                <input type="date" id="statsDate"
-                    style="background: rgba(11, 25, 44, 0.6); color: white; border: 1px solid var(--accent-color); padding: 5px 10px; border-radius: 5px; font-family: var(--font-mono); outline: none;">
+                <div style="display: flex; gap: 10px;">
+                    <select id="statsStatus"
+                        style="background: rgba(11, 25, 44, 0.6); color: white; border: 1px solid var(--accent-color); padding: 5px 10px; border-radius: 5px; font-family: var(--font-mono); outline: none;">
+                        <option value="all">Tất cả trạng thái</option>
+                        <option value="SUCCESS">Thành công</option>
+                        <option value="FAILED">Thất bại</option>
+                        <option value="PROCESSING">Đang xử lý</option>
+                    </select>
+                    <input type="date" id="statsDate"
+                        style="background: rgba(11, 25, 44, 0.6); color: white; border: 1px solid var(--accent-color); padding: 5px 10px; border-radius: 5px; font-family: var(--font-mono); outline: none;">
+                </div>
             </div>
             <div class="chart-wrapper" style="height: 400px; width: 100%;">
                 <canvas id="deviceStatsChart"></canvas>

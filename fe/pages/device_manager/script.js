@@ -23,21 +23,26 @@ function initChart() {
         type: 'bar',
         data: {
             labels: ['Quạt gió (D1)', 'Đèn chùm (D2)', 'Đèn quang (D3)', 'Điều hòa (D4)', 'Tủ lạnh (D5)'],
-            datasets: [{
-                label: 'Số lần thao tác',
-                data: [0, 0, 0, 0, 0],
-                backgroundColor: [gFan, gLamp1, gLamp2, gAc, gFridge],
-                borderColor: [
-                    '#0bdcb5',
-                    '#f3c200',
-                    '#a561b8',
-                    '#3498db',
-                    '#bdc3c7'
-                ],
-                borderWidth: 2,
-                borderRadius: 8,
-                barPercentage: 0.6
-            }]
+            datasets: [
+                {
+                    label: 'Số lần BẬT',
+                    data: [0, 0, 0, 0, 0],
+                    backgroundColor: [gFan, gLamp1, gLamp2, gAc, gFridge],
+                    borderColor: ['#0bdcb5', '#f3c200', '#a561b8', '#3498db', '#bdc3c7'],
+                    borderWidth: 2,
+                    borderRadius: 8,
+                    barPercentage: 0.6
+                },
+                {
+                    label: 'Số lần TẮT',
+                    data: [0, 0, 0, 0, 0],
+                    backgroundColor: 'rgba(231, 76, 60, 0.7)', /* Đỏ Mờ cho các cột Tắt */
+                    borderColor: '#e74c3c',
+                    borderWidth: 2,
+                    borderRadius: 8,
+                    barPercentage: 0.6
+                }
+            ]
         },
         options: {
             responsive: true,
@@ -78,18 +83,31 @@ function initChart() {
 async function fetchDeviceStats() {
     try {
         const dateVal = document.getElementById('statsDate').value;
-        const query = dateVal ? `?date=${dateVal}` : '';
-        const res = await fetch(`${API_URL}/actions/stats${query}`);
+        const statusVal = document.getElementById('statsStatus').value;
+        
+        let url = `${API_URL}/actions/stats?`;
+        if (dateVal) url += `date=${dateVal}&`;
+        if (statusVal) url += `status=${statusVal}`;
+        
+        const res = await fetch(url);
         const stats = await res.json();
         
         if (statsChart) {
-            // Cập nhật mảng data theo đúng thứ tự D1 -> D5
+            // Cột BẬT
             statsChart.data.datasets[0].data = [
-                stats.D1 || 0,
-                stats.D2 || 0,
-                stats.D3 || 0,
-                stats.D4 || 0,
-                stats.D5 || 0
+                stats.D1?.ON || 0,
+                stats.D2?.ON || 0,
+                stats.D3?.ON || 0,
+                stats.D4?.ON || 0,
+                stats.D5?.ON || 0
+            ];
+            // Cột TẮT
+            statsChart.data.datasets[1].data = [
+                stats.D1?.OFF || 0,
+                stats.D2?.OFF || 0,
+                stats.D3?.OFF || 0,
+                stats.D4?.OFF || 0,
+                stats.D5?.OFF || 0
             ];
             statsChart.update();
         }
@@ -211,10 +229,13 @@ document.addEventListener('DOMContentLoaded', () => {
     initChart();
     
     const dateInput = document.getElementById('statsDate');
+    const statusInput = document.getElementById('statsStatus');
+    
     const today = new Date().toISOString().split('T')[0];
     dateInput.value = today;
     
     dateInput.addEventListener('change', fetchDeviceStats);
+    statusInput.addEventListener('change', fetchDeviceStats);
 
     // Initial fetches
     fetchDeviceStatus();

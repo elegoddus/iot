@@ -258,30 +258,43 @@ router.get('/history', async (req, res) => {
 router.get('/stats', async (req, res) => {
     try {
         const dateFilter = req.query.date;
+        const statusFilter = req.query.status;
+
         let query = `
-            SELECT device_id, COUNT(*) as action_count 
+            SELECT device_id, action, COUNT(*) as action_count 
             FROM action_history 
-            WHERE DATE(created_at) = CURDATE()
-            GROUP BY device_id
+            WHERE 1=1
         `;
         let params = [];
-        
+
         if (dateFilter) {
-            query = `
-                SELECT device_id, COUNT(*) as action_count 
-                FROM action_history 
-                WHERE DATE(created_at) = ?
-                GROUP BY device_id
-            `;
-            params = [dateFilter];
+            query += ` AND DATE(created_at) = ?`;
+            params.push(dateFilter);
+        } else {
+            query += ` AND DATE(created_at) = CURDATE()`;
         }
+
+        if (statusFilter && statusFilter !== 'all') {
+            query += ` AND status = ?`;
+            params.push(statusFilter);
+        }
+
+        query += ` GROUP BY device_id, action`;
 
         const [rows] = await pool.query(query, params);
         
-        let stats = { D1: 0, D2: 0, D3: 0, D4: 0, D5: 0 };
+        let stats = { 
+            D1: { ON: 0, OFF: 0 }, 
+            D2: { ON: 0, OFF: 0 }, 
+            D3: { ON: 0, OFF: 0 }, 
+            D4: { ON: 0, OFF: 0 }, 
+            D5: { ON: 0, OFF: 0 } 
+        };
+        
         rows.forEach(row => {
             if (stats[row.device_id] !== undefined) {
-                stats[row.device_id] = row.action_count;
+                if (row.action === 'TURN_ON') stats[row.device_id].ON = row.action_count;
+                if (row.action === 'TURN_OFF') stats[row.device_id].OFF = row.action_count;
             }
         });
         res.json(stats);
