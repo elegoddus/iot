@@ -46,18 +46,18 @@ function initChart() {
                 y: {
                     beginAtZero: true,
                     ticks: {
-                        color: '#f8fafc',
+                        color: '#2d3436', /* Đổi sang màu xám đậm cho dễ đọc */
                         font: { size: 14, weight: 'bold' },
                         stepSize: 1
                     },
                     grid: {
-                        color: 'rgba(255, 255, 255, 0.1)',
+                        color: 'rgba(0, 0, 0, 0.1)', /* Đổi lưới sang đen mờ */
                         borderDash: [5, 5]
                     }
                 },
                 x: {
                     ticks: {
-                        color: '#f8fafc',
+                        color: '#2d3436', /* Đổi sang xám đậm */
                         font: { size: 13, weight: 'bold' }
                     },
                     grid: {
@@ -67,7 +67,7 @@ function initChart() {
             },
             plugins: {
                 legend: {
-                    labels: { color: '#fff', font: { size: 14 } }
+                    labels: { color: '#2d3436', font: { size: 14 } } /* Chữ đậm màu than chì */
                 }
             }
         }

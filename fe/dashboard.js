@@ -246,7 +246,7 @@ async function toggleDevice(deviceId, uiId) {
             body: JSON.stringify({ deviceId, action })
         });
 
-        // Timeout 10 giây SCADA (Rollback trạng thái an toàn)
+        // Timeout 10 giây
         setTimeout(() => {
             if (wrap.classList.contains('loading') && wrap.dataset.expected === action) {
                 wrap.classList.remove('loading');

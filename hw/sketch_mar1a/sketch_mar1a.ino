@@ -13,8 +13,8 @@ const char* mqtt_pwd = "truong0709";
 #define DEVICE1 2  // D4
 #define DEVICE2 14 // D5
 #define DEVICE3 15 // D8
-#define DEVICE4 12 // D6
-#define DEVICE5 13 // D7
+#define DEVICE4 16 // D0
+#define DEVICE5 5  // D1
 
 #define DHTPIN 4   // D2
 #define DHTTYPE DHT11
